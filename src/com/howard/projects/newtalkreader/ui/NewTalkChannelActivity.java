@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -33,7 +34,7 @@ public class NewTalkChannelActivity extends BaseActivity {
  						@Override
  						public boolean onNavigationItemSelected(
  								int itemPosition, long itemId) {
-// 							onSourceSelected((int) itemId);
+ 							Toast.makeText(getApplication(), "Select Category " + (String)categoryAdaptr.getItem(itemPosition), Toast.LENGTH_SHORT).show();
  							return true;
  						}
  					});

@@ -1,10 +1,15 @@
 <resources>
 
     <string name="app_name">NewTalkReader</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_new_talk_channel">NewTalkChannelActivity</string>
+    <string name="title_activity_new_talk_channel">新頭殼</string>
 
+    <string name="newtalk_message_loading">載入中 ...</string>
+    <string name="newtalk_retry">重試</string>
+    <string name="newtalk_error_unknown">發生錯誤</string>
+    <string name="settings_feedback">問題回報</string>
+    <string name="settings_feedback_summary">請提供您寶貴的意見或將錯誤回報給我們知道。</string>
+    
     <!-- Rss Channels catogroy for viewing -->
     <string-array name="rss_channel_category">
         <item>要聞</item>

@@ -57,18 +57,6 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
  		restoreSelection(savedInstanceState);
  		
     }
-       
-    @Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-			
-		// Store the configyration parameter into SharedPreference
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putInt("mSelectedCategory", mSelectedCategory);
-		editor.commit();
-	}
 
 	protected void onResume(){
     	super.onResume();
@@ -108,12 +96,14 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 	private void onCategorySelected(int category) {
 		Log.i(LOG_TAG,"Select Category on item position: " + category);
 		mSelectedCategory = category;
+
 		// Store the configyration parameter into SharedPreference
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putInt("mSelectedCategory", mSelectedCategory);
 		editor.commit();
-
+		
+		
 		if (!mDualPane) {
 			ChannelsPagerFragment frag = (ChannelsPagerFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.fragment_channels_items);

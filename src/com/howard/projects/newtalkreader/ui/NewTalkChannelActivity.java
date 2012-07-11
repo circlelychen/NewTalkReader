@@ -53,28 +53,10 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
  			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
  		}
  		
- 		// Reload configuration parameter from SharedPreferece
- 		SharedPreferences prefs = PreferenceManager.
- 				getDefaultSharedPreferences(this);
-		mSelectedCategory = prefs.getInt("mSelectedCategory",0);
+ 		// restore state parameter
+ 		restoreSelection(savedInstanceState);
+ 		
     }
-    
-    
-    
-    @Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		
-		
-		// Store the configyration parameter into SharedPreference
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putInt("mSelectedCategory", mSelectedCategory);
-		editor.commit();
-	}
-
-
 
 	protected void onResume(){
     	super.onResume();
@@ -93,6 +75,10 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 		if (savedInstanceState != null) {
 			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);
 			mSelectedChannel = savedInstanceState.getString(SAVED_SELECTED_CHANNEL);
+		}else{
+			SharedPreferences prefs = PreferenceManager.
+	 				getDefaultSharedPreferences(this);
+			mSelectedCategory = prefs.getInt("mSelectedCategory",0);
 		}
 		
 //		onChannelSelected(mSelectedChannel);
@@ -110,8 +96,14 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 	private void onCategorySelected(int category) {
 		Log.i(LOG_TAG,"Select Category on item position: " + category);
 		mSelectedCategory = category;
-//		SharedPreferencesUtils.putInt(this, SettingsActivity.PREF_LAST_SOURCE,
-//				mSelectedSource);
+
+		// Store the configyration parameter into SharedPreference
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt("mSelectedCategory", mSelectedCategory);
+		editor.commit();
+		
+		
 		if (!mDualPane) {
 			ChannelsPagerFragment frag = (ChannelsPagerFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.fragment_channels_items);

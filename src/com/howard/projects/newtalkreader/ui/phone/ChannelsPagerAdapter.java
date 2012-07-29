@@ -4,11 +4,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.howard.projects.newtalkreader.ui.ItemListFragment;
+import com.howard.projects.newtalkreader.ui.ChannelFragment;
 
 public class ChannelsPagerAdapter extends FragmentPagerAdapter {
 	
-	private static final String[] CONTENT = new String[] { "美牛議題", "林益世風暴", "公廣集團", "核電危機", "文林苑爭議"};
+	private static final String[] CONTENT = new String[] { "要聞", "國際", "政治", "財經", "司法", "生活"
+		, "媒體", "中國", "科技", "環保", "娛樂", "藝文", "地方"};
 
 	public ChannelsPagerAdapter(FragmentManager fm) {
 		super(fm);
@@ -21,7 +22,7 @@ public class ChannelsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return new ItemListFragment();
+		return new ChannelFragment(position);
 	}
 	
 	@Override

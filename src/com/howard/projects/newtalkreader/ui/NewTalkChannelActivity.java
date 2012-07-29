@@ -3,19 +3,18 @@ package com.howard.projects.newtalkreader.ui;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.ui.phone.ChannelsPagerFragment;
+import com.howard.projects.newtalkreader.utils.DLog;
 
 public class NewTalkChannelActivity extends SherlockFragmentActivity {
 
-	private static final String LOG_TAG = NewTalkChannelActivity.class.getSimpleName();
+	private static final String DLog_TAG = NewTalkChannelActivity.class.getSimpleName();
 	private SpinnerAdapter categoryAdaptr;
 	private boolean mDualPane;
 			
@@ -66,7 +65,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		Log.i(LOG_TAG, "onRestoreInstanceState()");
+		DLog.i(DLog_TAG, "onRestoreInstanceState()");
 		super.onRestoreInstanceState(savedInstanceState);
 		restoreSelection(savedInstanceState);	
 	}
@@ -86,7 +85,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
     
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		Log.i(LOG_TAG, "onSaveInstanceState()");
+		DLog.i(DLog_TAG, "onSaveInstanceState()");
 		super.onSaveInstanceState(outState);
 		outState.putInt(SAVED_SELECTED_CATEGORY, mSelectedCategory);
 		outState.putString(SAVED_SELECTED_CHANNEL, mSelectedChannel);
@@ -94,7 +93,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
     
 	
 	private void onCategorySelected(int category) {
-		Log.i(LOG_TAG,"Select Category on item position: " + category);
+		DLog.i(DLog_TAG,"Select Category on item position: " + category);
 		mSelectedCategory = category;
 
 		// Store the configyration parameter into SharedPreference

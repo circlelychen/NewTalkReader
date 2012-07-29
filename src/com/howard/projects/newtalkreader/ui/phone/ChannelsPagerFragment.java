@@ -1,5 +1,6 @@
 package com.howard.projects.newtalkreader.ui.phone;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ public class ChannelsPagerFragment extends SherlockFragment {
 
 	ViewPager mPager;
 	TitlePageIndicator mIndicator;
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -25,15 +26,15 @@ public class ChannelsPagerFragment extends SherlockFragment {
 		
 		// find pager
 		mPager = (ViewPager)root.findViewById(R.id.pager);
-		ChannelsPagerAdapter mAdapter = new ChannelsPagerAdapter(getActivity().getSupportFragmentManager());
+		ChannelsPagerAdapter mAdapter = new ChannelsPagerAdapter(getSherlockActivity().getSupportFragmentManager());
 		mPager.setAdapter(mAdapter);
 		
 		//find pager indicator, set theme, and associate pager  
         mIndicator = (TitlePageIndicator)root.findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
         final float density = getResources().getDisplayMetrics().density;
-        mIndicator.setBackgroundColor(0x18FF0000);
-        mIndicator.setFooterColor(0xFFAA2222);
+        mIndicator.setBackgroundColor(Color.YELLOW/*0x18FF0000*/);
+        mIndicator.setFooterColor(Color.GREEN/*0xFFAA2222*/);
         mIndicator.setFooterLineHeight(1 * density); //1dp
         mIndicator.setFooterIndicatorHeight(3 * density); //3dp
         mIndicator.setFooterIndicatorStyle(IndicatorStyle.Underline);

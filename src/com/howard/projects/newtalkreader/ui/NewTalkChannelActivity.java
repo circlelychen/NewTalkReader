@@ -3,19 +3,20 @@ package com.howard.projects.newtalkreader.ui;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.howard.projects.newtalkreader.R;
+import com.howard.projects.newtalkreader.app.ResourceFactory;
 import com.howard.projects.newtalkreader.ui.phone.ChannelsPagerFragment;
+import com.howard.projects.newtalkreader.ui.phone.ChannelsPagerFragment.OnChannelSelectedListener;
+import com.howard.projects.newtalkreader.utils.DLog;
 
-public class NewTalkChannelActivity extends SherlockFragmentActivity {
+public class NewTalkChannelActivity extends SherlockFragmentActivity implements OnChannelSelectedListener{
 
-	private static final String LOG_TAG = NewTalkChannelActivity.class.getSimpleName();
+	private static final String DLog_TAG = NewTalkChannelActivity.class.getSimpleName();
 	private SpinnerAdapter categoryAdaptr;
 	private boolean mDualPane;
 			
@@ -23,7 +24,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 	private static final String SAVED_SELECTED_CHANNEL = "_s_c";
 	
 	private int mSelectedCategory;
-	private String mSelectedChannel;
+	private int mSelectedChannel;
 	
 	
     @Override
@@ -37,7 +38,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
  		actionBar.setDisplayShowTitleEnabled(false);
  		categoryAdaptr = new ArrayAdapter<String>(getApplication(),
  				android.R.layout.simple_spinner_dropdown_item,
- 				getResources().getStringArray(R.array.rss_channel_category));
+ 				getResources().getStringArray(R.array.rss_category));
  		if (!mDualPane) {
  			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
  			actionBar.setListNavigationCallbacks(categoryAdaptr,
@@ -50,7 +51,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
  						}
  					});
  		} else {
- 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+// 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
  		}
  		
  		// restore state parameter
@@ -61,46 +62,58 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 	protected void onResume(){
     	super.onResume();
     	getSupportActionBar().setSelectedNavigationItem(mSelectedCategory);
+    	
+    	if (!mDualPane) {
+			ChannelsPagerFragment fragment = (ChannelsPagerFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.fragment_channels_items);
+			fragment.setOnChannelSelectedListener(this);
+		} else {
+			
+		}
     }
     
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		Log.i(LOG_TAG, "onRestoreInstanceState()");
+		DLog.i(DLog_TAG, "onRestoreInstanceState()");
 		super.onRestoreInstanceState(savedInstanceState);
+ 		 
+		//restore state parameter		
 		restoreSelection(savedInstanceState);	
-	}
-	
-	private void restoreSelection(Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);
-			mSelectedChannel = savedInstanceState.getString(SAVED_SELECTED_CHANNEL);
-		}else{
-			SharedPreferences prefs = PreferenceManager.
-	 				getDefaultSharedPreferences(this);
-			mSelectedCategory = prefs.getInt("mSelectedCategory",0);
-		}
-		
-//		onChannelSelected(mSelectedChannel);
 	}
     
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		Log.i(LOG_TAG, "onSaveInstanceState()");
+		DLog.i(DLog_TAG, "onSaveInstanceState()");
 		super.onSaveInstanceState(outState);
 		outState.putInt(SAVED_SELECTED_CATEGORY, mSelectedCategory);
-		outState.putString(SAVED_SELECTED_CHANNEL, mSelectedChannel);
+		outState.putInt(SAVED_SELECTED_CHANNEL, mSelectedChannel);
 	}
     
+	private void restoreSelection(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);
+			mSelectedChannel = savedInstanceState.getInt(SAVED_SELECTED_CHANNEL);
+		}else{
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			mSelectedCategory = prefs.getInt(SAVED_SELECTED_CATEGORY, 
+					ResourceFactory.TYPE_IMPORTANT);
+			mSelectedChannel = prefs.getInt(SAVED_SELECTED_CHANNEL,
+					ResourceFactory.getInstance().getDefaultChannelIndex(
+							this.getApplication()));
+		}
+		this.onCategorySelected(mSelectedCategory);
+		this.onChannelSelected(mSelectedChannel);
+	}
 	
 	private void onCategorySelected(int category) {
-		Log.i(LOG_TAG,"Select Category on item position: " + category);
+		DLog.i(DLog_TAG,"Select Category on item position: " + category);
 		mSelectedCategory = category;
 
-		// Store the configyration parameter into SharedPreference
+		// Store the CategorySelected parameters into SharedPreference
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putInt("mSelectedCategory", mSelectedCategory);
+		editor.putInt(SAVED_SELECTED_CATEGORY, mSelectedCategory);
 		editor.commit();
 		
 		
@@ -115,6 +128,28 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 //			frag.loadChannels(source);
 //			onChannelSelected(mSelectedChannel);
 		}
+	}
+	
+	public void onChannelSelected(int channel){
+		DLog.i(DLog_TAG,"onChannelSelected on: " + channel);
+		mSelectedChannel = channel;
+		
+		// Store the ChannelSelected parameters into SharedPreference
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt(SAVED_SELECTED_CHANNEL, mSelectedChannel);
+		editor.commit();
+		
+		if (!mDualPane) {
+			ChannelsPagerFragment fragment = (ChannelsPagerFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.fragment_channels_items);
+			fragment.loadChannel(mSelectedChannel);
+		} else {
+//			ChannelsListFragment frag = (ChannelsListFragment) getSupportFragmentManager()
+//					.findFragmentById(R.id.fragment_channels);
+//			onChannelSelected(mSelectedChannel);
+		}
+		
 	}
 }
 

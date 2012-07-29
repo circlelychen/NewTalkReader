@@ -29,31 +29,15 @@ public class ChannelFragment extends SherlockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener,
 		OnSharedPreferenceChangeListener {
 
-	private static final String [] DEFAULT_CHANNELS = {
-		"http://newtalk.tw/rss_news.php",
-		"http://newtalk.tw/rss_news.php?oid=1",
-		"http://newtalk.tw/rss_news.php?oid=2",
-		"http://newtalk.tw/rss_news.php?oid=3",
-		"http://newtalk.tw/rss_news.php?oid=4",
-		"http://newtalk.tw/rss_news.php?oid=5",
-		"http://newtalk.tw/rss_news.php?oid=6",
-		"http://newtalk.tw/rss_news.php?oid=7",
-		"http://newtalk.tw/rss_news.php?oid=8",
-		"http://newtalk.tw/rss_news.php?oid=9",
-		"http://newtalk.tw/rss_news.php?oid=10",
-		"http://newtalk.tw/rss_news.php?oid=11",
-		"http://newtalk.tw/rss_news.php?oid=14"
-	};
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
-	private int mPosition;
+	private String DEFAULT_CHANNEL;
+	private ListView mItemsList;
+	private View mLoading;
+	private ChannelAdapter mAdapter;
 	
-	ListView mItemsList;
-	View mLoading;
-	ChannelAdapter mAdapter;
-	
-	public ChannelFragment(int position){
-		mPosition = position;
+	public ChannelFragment(String link){
+		DEFAULT_CHANNEL = link;
 	}
 	
 	@Override
@@ -66,7 +50,9 @@ public class ChannelFragment extends SherlockFragment implements
 		mAdapter = new ChannelAdapter(this.getActivity());
 		mItemsList.setAdapter(mAdapter);
 		mItemsList.setOnItemClickListener(this);
-		this.getActivity().getSupportLoaderManager().initLoader(mPosition, Bundle.EMPTY, this);
+		this.getActivity().getSupportLoaderManager().initLoader(DEFAULT_CHANNEL.hashCode(), 
+				Bundle.EMPTY, 
+				this);
 		
 		return root;
 		
@@ -82,18 +68,18 @@ public class ChannelFragment extends SherlockFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"create Loader on " + DEFAULT_CHANNELS[mPosition]);
+		Log.d(LOG_TAG,"create Loader on " + DEFAULT_CHANNEL);
 		mLoading.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
    
 		Context context = this.getActivity();
-        Uri uri = Items.contentUri(DEFAULT_CHANNELS[mPosition]);
+        Uri uri = Items.contentUri(DEFAULT_CHANNEL);
         return ChannelAdapter.createLoader(context, uri);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNELS[mPosition]);
+		Log.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNEL);
 		mAdapter.swapCursor(data);
 		mItemsList.setVisibility(View.VISIBLE);
 		mLoading.setVisibility(View.GONE);

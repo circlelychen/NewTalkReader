@@ -15,6 +15,8 @@ import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 public class ChannelsPagerFragment extends SherlockFragment {
 
 	ViewPager mPager;
+	ChannelsPagerAdapter mAdapter;
+	
 	TitlePageIndicator mIndicator;
 	
 	@Override
@@ -26,7 +28,8 @@ public class ChannelsPagerFragment extends SherlockFragment {
 		
 		// find pager
 		mPager = (ViewPager)root.findViewById(R.id.pager);
-		ChannelsPagerAdapter mAdapter = new ChannelsPagerAdapter(getSherlockActivity().getSupportFragmentManager());
+		mAdapter = new ChannelsPagerAdapter( getSherlockActivity().getApplication(), 
+				getSherlockActivity().getSupportFragmentManager());
 		mPager.setAdapter(mAdapter);
 		
 		//find pager indicator, set theme, and associate pager  
@@ -49,6 +52,10 @@ public class ChannelsPagerFragment extends SherlockFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		
+	}
+	
+	public void loadChannel(String channel){
 		
 	}
 

@@ -1,18 +1,22 @@
 package com.howard.projects.newtalkreader.ui.phone;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.ui.ChannelFragment;
 
 public class ChannelsPagerAdapter extends FragmentPagerAdapter {
 	
-	private static final String[] CONTENT = new String[] { "要聞", "國際", "政治", "財經", "司法", "生活"
-		, "媒體", "中國", "科技", "環保", "娛樂", "藝文", "地方"};
+	private Context mContext;
+	private String[] CONTENT ;
 
-	public ChannelsPagerAdapter(FragmentManager fm) {
+	public ChannelsPagerAdapter(Context context ,FragmentManager fm) {
 		super(fm);
+		mContext = context;
+		CONTENT = mContext.getResources().getStringArray(R.array.channel_category);
 	}
 
 	@Override
@@ -22,7 +26,7 @@ public class ChannelsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return new ChannelFragment(position);
+		return new ChannelFragment(mContext, position);
 	}
 	
 	@Override

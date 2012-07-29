@@ -29,31 +29,20 @@ public class ChannelFragment extends SherlockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener,
 		OnSharedPreferenceChangeListener {
 
-	private static final String [] DEFAULT_CHANNELS = {
-		"http://newtalk.tw/rss_news.php",
-		"http://newtalk.tw/rss_news.php?oid=1",
-		"http://newtalk.tw/rss_news.php?oid=2",
-		"http://newtalk.tw/rss_news.php?oid=3",
-		"http://newtalk.tw/rss_news.php?oid=4",
-		"http://newtalk.tw/rss_news.php?oid=5",
-		"http://newtalk.tw/rss_news.php?oid=6",
-		"http://newtalk.tw/rss_news.php?oid=7",
-		"http://newtalk.tw/rss_news.php?oid=8",
-		"http://newtalk.tw/rss_news.php?oid=9",
-		"http://newtalk.tw/rss_news.php?oid=10",
-		"http://newtalk.tw/rss_news.php?oid=11",
-		"http://newtalk.tw/rss_news.php?oid=14"
-	};
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
+	private String [] DEFAULT_CHANNELS;
 	
 	private int mPosition;
 	
+	private Context mContext;
 	ListView mItemsList;
 	View mLoading;
 	ChannelAdapter mAdapter;
 	
-	public ChannelFragment(int position){
+	public ChannelFragment(Context context ,int position){
 		mPosition = position;
+		mContext = context;
+		DEFAULT_CHANNELS = mContext.getResources().getStringArray(R.array.channel_link);
 	}
 	
 	@Override

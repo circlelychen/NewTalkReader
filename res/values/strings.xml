@@ -10,9 +10,42 @@
     <string name="settings_feedback">問題回報</string>
     <string name="settings_feedback_summary">請提供您寶貴的意見或將錯誤回報給我們知道。</string>
     
-    <!-- Rss Channels catogroy for viewing -->
-    <string-array name="rss_channel_category">
+    <!-- Rss catogroy for viewing -->
+    <string-array name="rss_category">
         <item>要聞</item>
         <item>議題</item>
+    </string-array>
+    
+    <!-- Channel catogroy for viewing -->
+    <string-array name="channel_category">
+        <item>要聞</item>
+        <item>國際</item>
+        <item>政治</item>
+        <item>財經</item>
+        <item>司法</item>
+        <item>生活</item>
+        <item>媒體</item>
+        <item>中國</item>
+        <item>科技</item>
+        <item>環保</item>
+        <item>娛樂</item>
+        <item>藝文</item>
+        <item>地方</item>
+    </string-array>
+    
+    <string-array name="channel_link">
+        <item>http://newtalk.tw/rss_news.php</item>
+        <item>http://newtalk.tw/rss_news.php?oid=1</item>
+        <item>http://newtalk.tw/rss_news.php?oid=2</item>
+        <item>http://newtalk.tw/rss_news.php?oid=3</item>
+        <item>http://newtalk.tw/rss_news.php?oid=4</item>
+        <item>http://newtalk.tw/rss_news.php?oid=5</item>
+        <item>http://newtalk.tw/rss_news.php?oid=6</item>
+        <item>http://newtalk.tw/rss_news.php?oid=7</item>
+        <item>http://newtalk.tw/rss_news.php?oid=8</item>
+        <item>http://newtalk.tw/rss_news.php?oid=9</item>
+        <item>http://newtalk.tw/rss_news.php?oid=10</item>
+        <item>http://newtalk.tw/rss_news.php?oid=11</item>
+        <item>http://newtalk.tw/rss_news.php?oid=14</item>
     </string-array>
 </resources>

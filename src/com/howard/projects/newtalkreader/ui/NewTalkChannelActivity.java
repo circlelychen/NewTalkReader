@@ -36,7 +36,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
  		actionBar.setDisplayShowTitleEnabled(false);
  		categoryAdaptr = new ArrayAdapter<String>(getApplication(),
  				android.R.layout.simple_spinner_dropdown_item,
- 				getResources().getStringArray(R.array.rss_channel_category));
+ 				getResources().getStringArray(R.array.rss_category));
  		if (!mDualPane) {
  			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
  			actionBar.setListNavigationCallbacks(categoryAdaptr,
@@ -55,6 +55,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
  		// restore state parameter
  		restoreSelection(savedInstanceState);
  		
+ 		
     }
 
 	protected void onResume(){
@@ -67,20 +68,9 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 		// TODO Auto-generated method stub
 		DLog.i(DLog_TAG, "onRestoreInstanceState()");
 		super.onRestoreInstanceState(savedInstanceState);
+ 		 
+		//restore state parameter		
 		restoreSelection(savedInstanceState);	
-	}
-	
-	private void restoreSelection(Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);
-			mSelectedChannel = savedInstanceState.getString(SAVED_SELECTED_CHANNEL);
-		}else{
-			SharedPreferences prefs = PreferenceManager.
-	 				getDefaultSharedPreferences(this);
-			mSelectedCategory = prefs.getInt("mSelectedCategory",0);
-		}
-		
-//		onChannelSelected(mSelectedChannel);
 	}
     
 	@Override
@@ -91,15 +81,28 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 		outState.putString(SAVED_SELECTED_CHANNEL, mSelectedChannel);
 	}
     
+	private void restoreSelection(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);
+			mSelectedChannel = savedInstanceState.getString(SAVED_SELECTED_CHANNEL);
+		}else{
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			mSelectedCategory = prefs.getInt(SAVED_SELECTED_CATEGORY,0);
+			mSelectedChannel = prefs.getString(SAVED_SELECTED_CHANNEL, 
+					ResourceFactory.getInstance().getDefaultChannel(this.getApplication()));
+		}
+		this.onCategorySelected(mSelectedCategory);
+		this.onChannelSelected(mSelectedChannel);
+	}
 	
 	private void onCategorySelected(int category) {
 		DLog.i(DLog_TAG,"Select Category on item position: " + category);
 		mSelectedCategory = category;
 
-		// Store the configyration parameter into SharedPreference
+		// Store the CategorySelected parameters into SharedPreference
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putInt("mSelectedCategory", mSelectedCategory);
+		editor.putInt(SAVED_SELECTED_CATEGORY, mSelectedCategory);
 		editor.commit();
 		
 		
@@ -114,6 +117,28 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 //			frag.loadChannels(source);
 //			onChannelSelected(mSelectedChannel);
 		}
+	}
+	
+	private void onChannelSelected(String channel){
+		DLog.i(DLog_TAG,"Select Channel on: " + channel);
+		mSelectedChannel = channel;
+		
+		// Store the ChannelSelected parameters into SharedPreference
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(SAVED_SELECTED_CHANNEL, mSelectedChannel);
+		editor.commit();
+		
+		if (!mDualPane) {
+			ChannelsPagerFragment fragment = (ChannelsPagerFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.fragment_channels_items);
+			fragment.loadChannel(mSelectedChannel);
+		} else {
+//			ChannelsListFragment frag = (ChannelsListFragment) getSupportFragmentManager()
+//					.findFragmentById(R.id.fragment_channels);
+//			onChannelSelected(mSelectedChannel);
+		}
+		
 	}
 }
 

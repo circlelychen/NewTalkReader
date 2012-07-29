@@ -22,7 +22,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 	private static final String SAVED_SELECTED_CHANNEL = "_s_c";
 	
 	private int mSelectedCategory;
-	private String mSelectedChannel;
+	private int mSelectedChannel;
 	
 	
     @Override
@@ -78,18 +78,20 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 		DLog.i(DLog_TAG, "onSaveInstanceState()");
 		super.onSaveInstanceState(outState);
 		outState.putInt(SAVED_SELECTED_CATEGORY, mSelectedCategory);
-		outState.putString(SAVED_SELECTED_CHANNEL, mSelectedChannel);
+		outState.putInt(SAVED_SELECTED_CHANNEL, mSelectedChannel);
 	}
     
 	private void restoreSelection(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);
-			mSelectedChannel = savedInstanceState.getString(SAVED_SELECTED_CHANNEL);
+			mSelectedChannel = savedInstanceState.getInt(SAVED_SELECTED_CHANNEL);
 		}else{
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-			mSelectedCategory = prefs.getInt(SAVED_SELECTED_CATEGORY,0);
-			mSelectedChannel = prefs.getString(SAVED_SELECTED_CHANNEL, 
-					ResourceFactory.getInstance().getDefaultChannel(this.getApplication()));
+			mSelectedCategory = prefs.getInt(SAVED_SELECTED_CATEGORY, 
+					ResourceFactory.TYPE_IMPORTANT);
+			mSelectedChannel = prefs.getInt(SAVED_SELECTED_CHANNEL,
+					ResourceFactory.getInstance().getDefaultChannelIndex(
+							this.getApplication()));
 		}
 		this.onCategorySelected(mSelectedCategory);
 		this.onChannelSelected(mSelectedChannel);
@@ -119,14 +121,14 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
 		}
 	}
 	
-	private void onChannelSelected(String channel){
-		DLog.i(DLog_TAG,"Select Channel on: " + channel);
+	public void onChannelSelected(int channel){
+		DLog.i(DLog_TAG,"onChannelSelected on: " + channel);
 		mSelectedChannel = channel;
 		
 		// Store the ChannelSelected parameters into SharedPreference
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(SAVED_SELECTED_CHANNEL, mSelectedChannel);
+		editor.putInt(SAVED_SELECTED_CHANNEL, mSelectedChannel);
 		editor.commit();
 		
 		if (!mDualPane) {

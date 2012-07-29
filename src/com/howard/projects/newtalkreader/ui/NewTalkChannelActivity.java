@@ -9,10 +9,12 @@ import android.widget.SpinnerAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.howard.projects.newtalkreader.R;
+import com.howard.projects.newtalkreader.app.ResourceFactory;
 import com.howard.projects.newtalkreader.ui.phone.ChannelsPagerFragment;
+import com.howard.projects.newtalkreader.ui.phone.ChannelsPagerFragment.OnChannelSelectedListener;
 import com.howard.projects.newtalkreader.utils.DLog;
 
-public class NewTalkChannelActivity extends SherlockFragmentActivity {
+public class NewTalkChannelActivity extends SherlockFragmentActivity implements OnChannelSelectedListener{
 
 	private static final String DLog_TAG = NewTalkChannelActivity.class.getSimpleName();
 	private SpinnerAdapter categoryAdaptr;
@@ -49,18 +51,25 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity {
  						}
  					});
  		} else {
- 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+// 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
  		}
  		
  		// restore state parameter
  		restoreSelection(savedInstanceState);
- 		
  		
     }
 
 	protected void onResume(){
     	super.onResume();
     	getSupportActionBar().setSelectedNavigationItem(mSelectedCategory);
+    	
+    	if (!mDualPane) {
+			ChannelsPagerFragment fragment = (ChannelsPagerFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.fragment_channels_items);
+			fragment.setOnChannelSelectedListener(this);
+		} else {
+			
+		}
     }
     
 	@Override

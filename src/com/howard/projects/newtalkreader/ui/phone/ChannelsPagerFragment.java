@@ -44,13 +44,14 @@ public class ChannelsPagerFragment extends SherlockFragment implements ViewPager
         mIndicator.setViewPager(mPager);
         
         final float density = getResources().getDisplayMetrics().density;
-        mIndicator.setBackgroundColor(Color.YELLOW/*0x18FF0000*/);
-        mIndicator.setFooterColor(Color.GREEN/*0xFFAA2222*/);
+        mIndicator.setBackgroundColor(0xFF66CC33);
+        mIndicator.setFooterColor(0x33F18F00);
         mIndicator.setFooterLineHeight(1 * density); //1dp
         mIndicator.setFooterIndicatorHeight(3 * density); //3dp
         mIndicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
-        mIndicator.setTextColor(0xAA000000);
-        mIndicator.setSelectedColor(0xFF000000);
+        mIndicator.setTextColor(Color.WHITE);
+        mIndicator.setTextSize(28);
+        mIndicator.setSelectedColor(Color.WHITE);
         mIndicator.setSelectedBold(true);
 		
         return root;

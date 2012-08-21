@@ -21,8 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.android.feeds.FeedExtras;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
+import com.howard.projects.newtalkreader.utils.DLog;
 
 
 public class ChannelFragment extends SherlockFragment implements
@@ -34,6 +36,7 @@ public class ChannelFragment extends SherlockFragment implements
 	private String DEFAULT_CHANNEL;
 	private ListView mItemsList;
 	private View mLoading;
+	private View mError;
 	private ChannelAdapter mAdapter;
 	
 	public ChannelFragment(String link){
@@ -42,9 +45,10 @@ public class ChannelFragment extends SherlockFragment implements
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	
+		DLog.i(LOG_TAG, "onCreateView() with channel :"+ DEFAULT_CHANNEL);
 		View root = inflater.inflate(R.layout.newtalk_items_list,container, false);
 		mLoading = (View)root.findViewById(R.id.loading);
+		mError = (View)root.findViewById(R.id.error);
 		
 		mItemsList = (ListView) root.findViewById(android.R.id.list);
 		mAdapter = new ChannelAdapter(this.getActivity());
@@ -81,8 +85,11 @@ public class ChannelFragment extends SherlockFragment implements
 		// TODO Auto-generated method stub
 		Log.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNEL);
 		mAdapter.swapCursor(data);
-		mItemsList.setVisibility(View.VISIBLE);
 		mLoading.setVisibility(View.GONE);
+		mError.setVisibility(mAdapter.isEmpty() && mAdapter.hasError() ? View.VISIBLE : View.GONE);
+		
+		mItemsList.setVisibility(View.VISIBLE);
+		
         
 	}
 
@@ -135,5 +142,10 @@ class ChannelAdapter extends CursorAdapter{
 		LayoutInflater inflater = LayoutInflater.from(mContext);
         return inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
 	}
+	
+	public boolean hasError() {
+        Cursor cursor = getCursor();
+        return cursor != null && cursor.getExtras().containsKey(FeedExtras.EXTRA_ERROR);
+    }
 	
 }

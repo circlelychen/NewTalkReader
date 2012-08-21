@@ -29,6 +29,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	DLog.i(DLog_TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newtalk_singlepane);
         		
@@ -60,6 +61,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
     }
 
 	protected void onResume(){
+		DLog.i(DLog_TAG, "onResume()");
     	super.onResume();
     	getSupportActionBar().setSelectedNavigationItem(mSelectedCategory);
     	

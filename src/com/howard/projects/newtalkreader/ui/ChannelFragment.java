@@ -1,6 +1,7 @@
 package com.howard.projects.newtalkreader.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
@@ -32,7 +33,7 @@ public class ChannelFragment extends SherlockFragment implements
 
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
-	private String DEFAULT_CHANNEL;
+	private Uri DEFAULT_CHANNEL;
 	private ListView mItemsList;
 	private View mLoading;
 	private View mError;
@@ -99,8 +100,7 @@ public class ChannelFragment extends SherlockFragment implements
 		mLoading.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
    
 		Context context = this.getActivity();
-        Uri uri = Items.contentUri(DEFAULT_CHANNEL);
-        return ChannelAdapter.createLoader(context, uri);
+        return ChannelAdapter.createLoader(context, DEFAULT_CHANNEL);
 	}
 
 	@Override

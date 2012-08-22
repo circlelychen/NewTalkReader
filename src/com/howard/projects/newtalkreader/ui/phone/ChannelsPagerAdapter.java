@@ -32,7 +32,9 @@ public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return new ChannelFragment(CONTENT.get(position).getLink());
+		DLog.i(TAG,"getItem("+position+")");
+		Uri channel_uri = Items.contentUri(CONTENT.get(position).getLink());
+		return ChannelFragment.newInstance( channel_uri );
 	}
 	
 	@Override

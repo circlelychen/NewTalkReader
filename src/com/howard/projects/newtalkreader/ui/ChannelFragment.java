@@ -26,7 +26,6 @@ import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
 
-
 public class ChannelFragment extends SherlockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener,
 		OnSharedPreferenceChangeListener {
@@ -39,13 +38,37 @@ public class ChannelFragment extends SherlockFragment implements
 	private View mError;
 	private ChannelAdapter mAdapter;
 	
-	public ChannelFragment(String link){
-		DEFAULT_CHANNEL = link;
+	/*
+	 * All subclasses of Fragment must include a public empty constructor. The framework will often 
+	 * re-instantiate a fragment class when needed, in particular during state restore, and needs 
+	 * to be able to find this constructor to instantiate it. If the empty constructor is not available, 
+	 * a runtime exception will occur in some cases during state restore.
+	 * */
+	public ChannelFragment(){
+		
+	}
+	
+	public static ChannelFragment newInstance(Uri link){
+		ChannelFragment fragment = new ChannelFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("_url", link);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 	
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		
+		Bundle bundle = this.getArguments();
+		DEFAULT_CHANNEL = bundle.getParcelable("_url");
+	}
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		DLog.i(LOG_TAG, "onCreateView() with channel :"+ DEFAULT_CHANNEL);
+		
 		View root = inflater.inflate(R.layout.newtalk_items_list,container, false);
 		mLoading = (View)root.findViewById(R.id.loading);
 		mError = (View)root.findViewById(R.id.error);

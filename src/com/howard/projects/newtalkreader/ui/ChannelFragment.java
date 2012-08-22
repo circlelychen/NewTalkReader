@@ -1,6 +1,7 @@
 package com.howard.projects.newtalkreader.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
@@ -21,9 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.android.feeds.FeedExtras;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
-
+import com.howard.projects.newtalkreader.utils.DLog;
 
 public class ChannelFragment extends SherlockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener,
@@ -31,20 +33,46 @@ public class ChannelFragment extends SherlockFragment implements
 
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
-	private String DEFAULT_CHANNEL;
+	private Uri DEFAULT_CHANNEL;
 	private ListView mItemsList;
 	private View mLoading;
+	private View mError;
 	private ChannelAdapter mAdapter;
 	
-	public ChannelFragment(String link){
-		DEFAULT_CHANNEL = link;
+	/*
+	 * All subclasses of Fragment must include a public empty constructor. The framework will often 
+	 * re-instantiate a fragment class when needed, in particular during state restore, and needs 
+	 * to be able to find this constructor to instantiate it. If the empty constructor is not available, 
+	 * a runtime exception will occur in some cases during state restore.
+	 * */
+	public ChannelFragment(){
+		
+	}
+	
+	public static ChannelFragment newInstance(Uri link){
+		ChannelFragment fragment = new ChannelFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("_url", link);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 	
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		
+		Bundle bundle = this.getArguments();
+		DEFAULT_CHANNEL = bundle.getParcelable("_url");
+	}
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	
+		DLog.i(LOG_TAG, "onCreateView() with channel :"+ DEFAULT_CHANNEL);
+		
 		View root = inflater.inflate(R.layout.newtalk_items_list,container, false);
 		mLoading = (View)root.findViewById(R.id.loading);
+		mError = (View)root.findViewById(R.id.error);
 		
 		mItemsList = (ListView) root.findViewById(android.R.id.list);
 		mAdapter = new ChannelAdapter(this.getActivity());
@@ -72,8 +100,7 @@ public class ChannelFragment extends SherlockFragment implements
 		mLoading.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
    
 		Context context = this.getActivity();
-        Uri uri = Items.contentUri(DEFAULT_CHANNEL);
-        return ChannelAdapter.createLoader(context, uri);
+        return ChannelAdapter.createLoader(context, DEFAULT_CHANNEL);
 	}
 
 	@Override
@@ -81,8 +108,11 @@ public class ChannelFragment extends SherlockFragment implements
 		// TODO Auto-generated method stub
 		Log.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNEL);
 		mAdapter.swapCursor(data);
-		mItemsList.setVisibility(View.VISIBLE);
 		mLoading.setVisibility(View.GONE);
+		mError.setVisibility(mAdapter.isEmpty() && mAdapter.hasError() ? View.VISIBLE : View.GONE);
+		
+		mItemsList.setVisibility(View.VISIBLE);
+		
         
 	}
 
@@ -135,5 +165,10 @@ class ChannelAdapter extends CursorAdapter{
 		LayoutInflater inflater = LayoutInflater.from(mContext);
         return inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
 	}
+	
+	public boolean hasError() {
+        Cursor cursor = getCursor();
+        return cursor != null && cursor.getExtras().containsKey(FeedExtras.EXTRA_ERROR);
+    }
 	
 }

@@ -30,6 +30,7 @@ public class ChannelsPagerFragment extends SherlockFragment implements ViewPager
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		DLog.i(TAG, "onCreateView()");
 		super.onCreateView(inflater, container, savedInstanceState);
 		View root = (View)inflater.inflate(R.layout.newtalk_viewpager_layout, container, false);
 		
@@ -60,6 +61,7 @@ public class ChannelsPagerFragment extends SherlockFragment implements ViewPager
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
+		DLog.i(TAG, "onResume()");
 		super.onResume();
 		mIndicator.setOnPageChangeListener(this);
 		

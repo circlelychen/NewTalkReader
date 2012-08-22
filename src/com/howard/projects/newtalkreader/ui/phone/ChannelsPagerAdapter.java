@@ -3,16 +3,20 @@ package com.howard.projects.newtalkreader.ui.phone;
 import java.util.List;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.app.ResourceFactory;
 import com.howard.projects.newtalkreader.app.ResourceFactory.ChannelInfo;
+import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.ui.ChannelFragment;
+import com.howard.projects.newtalkreader.utils.DLog;
 
-public class ChannelsPagerAdapter extends FragmentPagerAdapter {
+public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
+	
+	private static String TAG = ChannelsPagerAdapter.class.getSimpleName();
 	
 	private List<ChannelInfo> CONTENT;
 
@@ -28,7 +32,9 @@ public class ChannelsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return new ChannelFragment(CONTENT.get(position).getLink());
+		DLog.i(TAG,"getItem("+position+")");
+		Uri channel_uri = Items.contentUri(CONTENT.get(position).getLink());
+		return ChannelFragment.newInstance( channel_uri );
 	}
 	
 	@Override

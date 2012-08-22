@@ -163,7 +163,8 @@ class ChannelAdapter extends CursorAdapter{
 		// TODO Auto-generated method stub
 		Log.d(LOG_TAG,"newView ");
 		LayoutInflater inflater = LayoutInflater.from(mContext);
-        return inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+		View view = inflater.inflate(R.layout.newtalk_item_row, parent, false);
+        return view;
 	}
 	
 	public boolean hasError() {

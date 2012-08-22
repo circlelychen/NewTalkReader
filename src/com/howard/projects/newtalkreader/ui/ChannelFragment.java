@@ -136,7 +136,7 @@ class ChannelAdapter extends CursorAdapter{
 	private Context mContext;
 	
 	private static final String[] PROJECTION = {
-        Items._ID, Items.TITLE_PLAINTEXT, Items.DESCRIPTION, Items.LINK	
+        Items._ID, Items.TITLE_PLAINTEXT, Items.DESCRIPTION, Items.LINK, Items.PUBDATE	
 	};
 	
 	public ChannelAdapter(Context context) {
@@ -153,9 +153,20 @@ class ChannelAdapter extends CursorAdapter{
 	public void bindView(View view, Context context, Cursor cursor) {
 		// TODO Auto-generated method stub
 		Log.d(LOG_TAG,"bindView ");
-		String title = cursor.getString(cursor.getColumnIndex(Items.TITLE_PLAINTEXT));
-        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-        text1.setText(title);
+		//rss_title_plaintext
+		String title_plaintext = cursor.getString(cursor.getColumnIndex(Items.TITLE_PLAINTEXT));
+        TextView tv_titleplaintext = (TextView) view.findViewById(R.id.rss_item_title_plainttext);
+        tv_titleplaintext.setText(title_plaintext);
+        
+        //rss_pubDate
+        String pubdate = cursor.getString(cursor.getColumnIndex(Items.PUBDATE));
+        TextView tv_pubdate = (TextView) view.findViewById(R.id.rss_item_pubdate);
+        tv_pubdate.setText(pubdate);
+        
+        //rss_description
+        String description = cursor.getString(cursor.getColumnIndex(Items.DESCRIPTION));
+        TextView tv_description = (TextView) view.findViewById(R.id.rss_item_description);
+        tv_description.setText(description);
 	}
 
 	@Override

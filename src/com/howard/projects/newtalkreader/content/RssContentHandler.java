@@ -211,6 +211,7 @@ public class RssContentHandler extends XmlContentHandler {
         column(mItemElement, RSS_NAMESPACE, "title", Items.TITLE_PLAINTEXT);
         column(mItemElement, RSS_NAMESPACE, "description", Items.DESCRIPTION);
         column(mItemElement, RSS_NAMESPACE, "link", Items.LINK);
+        column(mItemElement, RSS_NAMESPACE, "pubDate", Items.PUBDATE);	//add this column to fetch publish date [ howard ]
         column(mItemElement, RSS_NAMESPACE, "guid", Items._ID);
         column(mItemElement, RSS_NAMESPACE, "guid", Items.GUID);
 

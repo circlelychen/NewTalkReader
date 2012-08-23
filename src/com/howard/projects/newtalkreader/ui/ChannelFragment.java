@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -153,28 +154,41 @@ class ChannelAdapter extends CursorAdapter{
 	public void bindView(View view, Context context, Cursor cursor) {
 		// TODO Auto-generated method stub
 		Log.d(LOG_TAG,"bindView ");
+		ViewHolder viewHolder = (ViewHolder) view.getTag();
+		
 		//rss_title_plaintext
 		String title_plaintext = cursor.getString(cursor.getColumnIndex(Items.TITLE_PLAINTEXT));
-        TextView tv_titleplaintext = (TextView) view.findViewById(R.id.rss_item_title_plainttext);
-        tv_titleplaintext.setText(title_plaintext);
+        viewHolder.tv_title_plaintext.setText(title_plaintext);
         
         //rss_pubDate
         String pubdate = cursor.getString(cursor.getColumnIndex(Items.PUBDATE));
-        TextView tv_pubdate = (TextView) view.findViewById(R.id.rss_item_pubdate);
-        tv_pubdate.setText(pubdate);
-        
+        viewHolder.tv_pubdate.setText(pubdate);
+            
         //rss_description
         String description = cursor.getString(cursor.getColumnIndex(Items.DESCRIPTION));
-        TextView tv_description = (TextView) view.findViewById(R.id.rss_item_description);
-        tv_description.setText(description);
+        viewHolder.tv_description.setText(description);
 	}
 
+	// viewholder to aptimize loading performance
+	private static final class ViewHolder {
+		TextView tv_title_plaintext;
+		TextView tv_pubdate;
+		TextView tv_description;
+	}
+	
 	@Override
 	public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		Log.d(LOG_TAG,"newView ");
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		View view = inflater.inflate(R.layout.newtalk_item_row, parent, false);
+		
+		ViewHolder viewHolder = new ViewHolder();
+		viewHolder.tv_title_plaintext = (TextView) view.findViewById(R.id.rss_item_title_plainttext);
+		viewHolder.tv_description = (TextView) view.findViewById(R.id.rss_item_description);
+		viewHolder.tv_pubdate = (TextView) view.findViewById(R.id.rss_item_pubdate);
+		view.setTag(viewHolder);
+		
         return view;
 	}
 	

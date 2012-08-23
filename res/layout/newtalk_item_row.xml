@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ChannelItemRow" >
+    <ImageView
+        android:id="@+id/rss_item_thumbnail"
+        android:src="@drawable/rss_item_thumbnail"
+        android:layout_alignParentLeft="true"
+        style="@style/RssItemThumbnail">
+    </ImageView>
     <TextView
-        android:id="@+id/item_title">
+        android:id="@+id/rss_item_title_plainttext"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/rss_item_thumbnail"
+        style="@style/RssItemTitlePlaintext">
     </TextView>
     <TextView
-        android:id="@+id/item_description"
-        android:visibility="invisible">
+        android:id="@+id/rss_item_description"
+        android:layout_toRightOf="@id/rss_item_thumbnail"
+        android:layout_below="@id/rss_item_title_plainttext"
+        style="@style/RssItemDescription">
     </TextView>
     <TextView
-        android:id="@+id/item_pubdate"
-        android:visibility="invisible">
+        android:id="@+id/rss_item_pubdate"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/rss_item_description"
+        style="@style/RssItemPubdate">
     </TextView>
-</LinearLayout>
+</RelativeLayout>

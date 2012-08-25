@@ -1,13 +1,15 @@
 package com.howard.projects.newtalkreader.ui;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.feeds.FeedExtras;
+import com.google.android.imageloader.ImageLoader;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
@@ -35,10 +38,12 @@ public class ChannelFragment extends SherlockFragment implements
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
 	private Uri DEFAULT_CHANNEL;
+	
 	private ListView mItemsList;
+	private ChannelAdapter mAdapter;
 	private View mLoading;
 	private View mError;
-	private ChannelAdapter mAdapter;
+	
 	
 	/*
 	 * All subclasses of Fragment must include a public empty constructor. The framework will often 
@@ -51,6 +56,7 @@ public class ChannelFragment extends SherlockFragment implements
 	}
 	
 	public static ChannelFragment newInstance(Uri link){
+		//instantiate gragment and bind the URI and ImageLoader for DEFAUL_CHANNEL
 		ChannelFragment fragment = new ChannelFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("_url", link);
@@ -135,6 +141,7 @@ class ChannelAdapter extends CursorAdapter{
 
 	private static final String LOG_TAG = ChannelAdapter.class.getSimpleName();
 	private Context mContext;
+	ImageLoader mImageLoader;
 	
 	private static final String[] PROJECTION = {
         Items._ID, Items.TITLE_PLAINTEXT, Items.DESCRIPTION, Items.LINK, Items.PUBDATE	
@@ -144,6 +151,7 @@ class ChannelAdapter extends CursorAdapter{
         super(context, null, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         
         mContext = context;
+        mImageLoader = new ImageLoader();
     }
 	
 	 public static Loader<Cursor> createLoader(Context context, Uri uri) {
@@ -163,14 +171,24 @@ class ChannelAdapter extends CursorAdapter{
         //rss_pubDate
         String pubdate = cursor.getString(cursor.getColumnIndex(Items.PUBDATE));
         viewHolder.tv_pubdate.setText(pubdate);
-            
-        //rss_description
+        
         String description = cursor.getString(cursor.getColumnIndex(Items.DESCRIPTION));
-        viewHolder.tv_description.setText(description);
+        Document content = Jsoup.parse(description);
+        //rss_thumbnail
+        Element imgEle = content.select("img").first();
+        if(imgEle != null){
+        	String thumbnailUrl = imgEle.attr("src");
+        	imgEle.remove();
+        	DLog.i(LOG_TAG, "thumbnail url: " + thumbnailUrl);
+        	this.mImageLoader.bind(this, viewHolder.iv_thumbnail, thumbnailUrl);
+        }
+        //rss_description
+        viewHolder.tv_description.setText(content.text());
 	}
 
 	// viewholder to aptimize loading performance
 	private static final class ViewHolder {
+		ImageView iv_thumbnail;
 		TextView tv_title_plaintext;
 		TextView tv_pubdate;
 		TextView tv_description;
@@ -184,6 +202,7 @@ class ChannelAdapter extends CursorAdapter{
 		View view = inflater.inflate(R.layout.newtalk_item_row, parent, false);
 		
 		ViewHolder viewHolder = new ViewHolder();
+		viewHolder.iv_thumbnail = (ImageView) view.findViewById(R.id.rss_item_thumbnail);
 		viewHolder.tv_title_plaintext = (TextView) view.findViewById(R.id.rss_item_title_plainttext);
 		viewHolder.tv_description = (TextView) view.findViewById(R.id.rss_item_description);
 		viewHolder.tv_pubdate = (TextView) view.findViewById(R.id.rss_item_pubdate);

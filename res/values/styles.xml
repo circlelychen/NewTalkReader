@@ -23,21 +23,21 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentTop">true</item>
-    	<item name="android:textColor">#626262</item>
+    	<item name="android:textColor">@color/RssItemTitlePlaintextColor</item>
     	<item name="android:textStyle">bold</item>
     	<item name="android:text">RssItemTitlePlaintext</item>
     </style>
     <style name="RssItemDescription" parent="@android:style/TextAppearance.Small" >
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">#8c8c8c</item>
+        <item name="android:textColor">@color/RssItemDescriptionColor</item>
         <item name="android:maxLines">3</item>
         <item name="android:text">RssItemDescription</item>
     </style>
     <style name="RssItemPubdate" parent="@android:style/TextAppearance.Small" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">#626262</item>
+        <item name="android:textColor">@color/RssItemPubdateColor</item>
         <item name="android:text">RssItemPubdate</item>
     </style>
 

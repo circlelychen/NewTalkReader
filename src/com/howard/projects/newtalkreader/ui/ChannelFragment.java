@@ -161,28 +161,24 @@ class ChannelAdapter extends CursorAdapter{
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"bindView ");
+		DLog.d(LOG_TAG,"bindView ");
+		
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
 		
 		//rss_title_plaintext
 		String title_plaintext = cursor.getString(cursor.getColumnIndex(Items.TITLE_PLAINTEXT));
         viewHolder.tv_title_plaintext.setText(title_plaintext);
         
-        //rss_pubDate
-        String pubdate = cursor.getString(cursor.getColumnIndex(Items.PUBDATE));
-        viewHolder.tv_pubdate.setText(pubdate);
-        
         String description = cursor.getString(cursor.getColumnIndex(Items.DESCRIPTION));
         Document content = Jsoup.parse(description);
-        //rss_thumbnail
+        //set rss_thumbnai value
         Element imgEle = content.select("img").first();
         if(imgEle != null){
-        	String thumbnailUrl = imgEle.attr("src");
+        	DLog.i(LOG_TAG, "thumbnail url: " + imgEle.attr("src"));
+        	this.mImageLoader.bind(this, viewHolder.iv_thumbnail, imgEle.attr("src"));
         	imgEle.remove();
-        	DLog.i(LOG_TAG, "thumbnail url: " + thumbnailUrl);
-        	this.mImageLoader.bind(this, viewHolder.iv_thumbnail, thumbnailUrl);
         }
-        //rss_description
+        //set rss_description values
         viewHolder.tv_description.setText(content.text());
 	}
 
@@ -190,14 +186,13 @@ class ChannelAdapter extends CursorAdapter{
 	private static final class ViewHolder {
 		ImageView iv_thumbnail;
 		TextView tv_title_plaintext;
-		TextView tv_pubdate;
 		TextView tv_description;
 	}
 	
 	@Override
 	public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"newView ");
+		DLog.d(LOG_TAG,"newView ");
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		View view = inflater.inflate(R.layout.newtalk_item_row, parent, false);
 		
@@ -205,7 +200,6 @@ class ChannelAdapter extends CursorAdapter{
 		viewHolder.iv_thumbnail = (ImageView) view.findViewById(R.id.rss_item_thumbnail);
 		viewHolder.tv_title_plaintext = (TextView) view.findViewById(R.id.rss_item_title_plainttext);
 		viewHolder.tv_description = (TextView) view.findViewById(R.id.rss_item_description);
-		viewHolder.tv_pubdate = (TextView) view.findViewById(R.id.rss_item_pubdate);
 		view.setTag(viewHolder);
 		
         return view;

@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
@@ -32,8 +33,7 @@ import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
 
 public class ChannelFragment extends SherlockFragment implements
-		LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener,
-		OnSharedPreferenceChangeListener {
+		LoaderManager.LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener {
 
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
@@ -84,7 +84,7 @@ public class ChannelFragment extends SherlockFragment implements
 		mItemsList = (ListView) root.findViewById(android.R.id.list);
 		mAdapter = new ChannelAdapter(this.getActivity());
 		mItemsList.setAdapter(mAdapter);
-		mItemsList.setOnItemClickListener(this);
+		mItemsList.setOnItemClickListener(mAdapter);
 		this.getActivity().getSupportLoaderManager().initLoader(DEFAULT_CHANNEL.hashCode(), 
 				Bundle.EMPTY, 
 				this);
@@ -128,16 +128,9 @@ public class ChannelFragment extends SherlockFragment implements
 		// TODO Auto-generated method stub
 		mAdapter.swapCursor(null);
 	}
-
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "click item", Toast.LENGTH_SHORT).show();
-		
-	}
 }
 
-class ChannelAdapter extends CursorAdapter{
+class ChannelAdapter extends CursorAdapter implements AdapterView.OnItemClickListener{
 
 	private static final String LOG_TAG = ChannelAdapter.class.getSimpleName();
 	private Context mContext;
@@ -169,6 +162,7 @@ class ChannelAdapter extends CursorAdapter{
 		viewHolder.iv_thumbnail.setImageResource(R.drawable.rss_item_thumbnail);
 		viewHolder.tv_description.setText("");
 		viewHolder.tv_description.setText("");
+		viewHolder.link = null;
 		
 		// set rss_title_plaintext value
 		String title_plaintext = cursor.getString(cursor.getColumnIndex(Items.TITLE_PLAINTEXT));
@@ -185,6 +179,9 @@ class ChannelAdapter extends CursorAdapter{
         }
         //set rss_description values
         viewHolder.tv_description.setText(content.text());
+        
+        //set rss_link values in viewHolder
+        viewHolder.link = Uri.parse(cursor.getString(cursor.getColumnIndex(Items.LINK)));
 	}
 
 	// viewholder to aptimize loading performance
@@ -192,6 +189,7 @@ class ChannelAdapter extends CursorAdapter{
 		ImageView iv_thumbnail;
 		TextView tv_title_plaintext;
 		TextView tv_description;
+		Uri link;
 	}
 	
 	@Override
@@ -208,6 +206,22 @@ class ChannelAdapter extends CursorAdapter{
 		view.setTag(viewHolder);
 		
         return view;
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		// TODO Auto-generated method stub
+		ViewHolder viewHolder = (ViewHolder) view.getTag();
+		TextView title = (TextView) viewHolder.tv_title_plaintext;
+		Uri link = viewHolder.link;
+		
+		Intent intent = new Intent(mContext, ItemDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("_title", title.getText().toString());
+		bundle.putParcelable("_link", link);
+		intent.putExtras(bundle);
+		mContext.startActivity(intent);
+		
 	}
 	
 	public boolean hasError() {

@@ -1,0 +1,9 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="RssItemTitlePlaintextColor">#626262</color>
+    <color name="RssItemDescriptionColor">#8c8c8c</color>
+    <color name="RssItemPubdateColor">#626262</color>
+    
+    <color name="TitleIndicatorText">#DCDCDC</color>
+    <color name="TitleIndicatorSelectedText">#FFFFFF</color>
+    <color name="TitleIndicatorBackground">#6CB92D</color>
+</resources>

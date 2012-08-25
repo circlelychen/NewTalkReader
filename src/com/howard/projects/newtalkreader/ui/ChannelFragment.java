@@ -165,7 +165,12 @@ class ChannelAdapter extends CursorAdapter{
 		
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
 		
-		//rss_title_plaintext
+		//reset all the views with null or default values
+		viewHolder.iv_thumbnail.setImageResource(R.drawable.rss_item_thumbnail);
+		viewHolder.tv_description.setText("");
+		viewHolder.tv_description.setText("");
+		
+		// set rss_title_plaintext value
 		String title_plaintext = cursor.getString(cursor.getColumnIndex(Items.TITLE_PLAINTEXT));
         viewHolder.tv_title_plaintext.setText(title_plaintext);
         

@@ -37,8 +37,8 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
         // Setup the Action Bar
  		ActionBar actionBar = getSupportActionBar();
  		actionBar.setDisplayShowTitleEnabled(false);
- 		categoryAdaptr = new ArrayAdapter<String>(getApplication(),
- 				android.R.layout.simple_spinner_dropdown_item,
+ 		categoryAdaptr = new ArrayAdapter<String>(this.getSupportActionBar().getThemedContext(),
+ 				R.layout.sherlock_spinner_dropdown_item,
  				getResources().getStringArray(R.array.rss_category));
  		if (!mDualPane) {
  			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);

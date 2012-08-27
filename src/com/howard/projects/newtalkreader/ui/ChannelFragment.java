@@ -15,6 +15,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -178,7 +179,7 @@ class ChannelAdapter extends CursorAdapter implements AdapterView.OnItemClickLis
         	imgEle.remove();
         }
         //set rss_description values
-        viewHolder.tv_description.setText(content.text());
+        viewHolder.tv_description.setText(Html.fromHtml(content.html()));
         
         //set rss_link values in viewHolder
         viewHolder.link = Uri.parse(cursor.getString(cursor.getColumnIndex(Items.LINK)));

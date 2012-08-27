@@ -10,6 +10,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">6dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
     
     <style name="RssItemThumbnail" parent="@android:style/TextAppearance.Medium" >
@@ -33,5 +34,26 @@
         <item name="android:textColor">@color/RssItemDescriptionColor</item>
         <item name="android:maxLines">4</item>
         <item name="android:text">RssItemDescription</item>
+    </style>
+    
+    <style name="NewsTitle" parent="@android:style/TextAppearance.Large" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+    	<item name="android:textColor">@color/RssItemTitlePlaintextColor</item>
+    	<item name="android:textStyle">bold</item>
+    	<item name="android:text">RssItemTitlePlaintext</item>
+    </style>
+    <style name="NewsDescription" parent="@android:style/TextAppearance.Medium" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/RssItemDescriptionColor</item>
+        <item name="android:text">RssItemDescription</item>
+    </style>
+    <style name="NewsThumbnail" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
 </resources>

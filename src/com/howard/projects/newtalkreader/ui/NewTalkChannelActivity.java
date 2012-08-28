@@ -1,6 +1,7 @@
 package com.howard.projects.newtalkreader.ui;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.ArrayAdapter;
@@ -39,8 +40,18 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
  		ActionBar actionBar = getSupportActionBar();
  		actionBar.setDisplayShowTitleEnabled(false);
  		
+ 		// detect the version code to load the suitable layout for spinner_dropdown_item
+ 		int actionbar_sipinner_dropdown_item_layout;
+ 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+ 		     // only for android older than gingerbread
+ 			actionbar_sipinner_dropdown_item_layout = R.layout.sherlock_spinner_dropdown_item;
+ 		}else{
+ 			actionbar_sipinner_dropdown_item_layout = android.R.layout.simple_spinner_dropdown_item;
+ 		}
+ 		
  		categoryAdaptr = new ArrayAdapter<String>(actionBar.getThemedContext(),
- 				R.layout.newtalk_actionbar_dropdown_spinner_item,
+ 				actionbar_sipinner_dropdown_item_layout,
+ 				//R.layout.sherlock_spinner_dropdown_item,
  				getResources().getStringArray(R.array.rss_category));
  		if (!mDualPane) {
  			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);

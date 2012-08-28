@@ -163,7 +163,8 @@ class NewsLoader extends AsyncTaskLoader<NewsEntity>{
 		try {
 			doc = Jsoup.connect(mUrl.toString()).get();
 		}catch (IOException e) {
-			DLog.e(TAG, "IOException Exception ");
+			DLog.e(TAG, "IOException Exception (Message):" + e.getMessage());
+			DLog.e(TAG, "IOException Exception (Cause):" + e.getCause());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return entity;

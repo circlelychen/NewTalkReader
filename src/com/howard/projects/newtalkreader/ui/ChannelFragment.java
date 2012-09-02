@@ -66,6 +66,17 @@ public class ChannelFragment extends SherlockFragment implements
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		
+		//initialize loader in onActivityCreated in Fragment 
+		this.getActivity().getSupportLoaderManager().initLoader(DEFAULT_CHANNEL.hashCode(), 
+				Bundle.EMPTY, 
+				this);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -88,9 +99,6 @@ public class ChannelFragment extends SherlockFragment implements
 		mAdapter = new ChannelAdapter(this.getActivity());
 		mItemsList.setAdapter(mAdapter);
 		mItemsList.setOnItemClickListener(mAdapter);
-		this.getActivity().getSupportLoaderManager().initLoader(DEFAULT_CHANNEL.hashCode(), 
-				Bundle.EMPTY, 
-				this);
 		
 		return root;
 		

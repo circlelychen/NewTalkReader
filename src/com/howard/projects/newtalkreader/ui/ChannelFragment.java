@@ -34,7 +34,7 @@ import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
 
 public class ChannelFragment extends SherlockFragment implements
-		LoaderManager.LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener {
+		LoaderManager.LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener, View.OnClickListener {
 
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
@@ -81,6 +81,8 @@ public class ChannelFragment extends SherlockFragment implements
 		View root = inflater.inflate(R.layout.newtalk_items_list,container, false);
 		mLoading = (View)root.findViewById(R.id.loading);
 		mError = (View)root.findViewById(R.id.error);
+		View retryView = (View)mError.findViewById(R.id.retry);
+		retryView.setOnClickListener(this);
 		
 		mItemsList = (ListView) root.findViewById(android.R.id.list);
 		mAdapter = new ChannelAdapter(this.getActivity());
@@ -93,6 +95,21 @@ public class ChannelFragment extends SherlockFragment implements
 		return root;
 		
     }
+	
+	private void reload() {
+        this.getActivity().getSupportLoaderManager().restartLoader(DEFAULT_CHANNEL.hashCode(), Bundle.EMPTY, this);
+    }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+        case R.id.retry:
+            reload();
+            break;
+		}
+		
+	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -104,9 +121,9 @@ public class ChannelFragment extends SherlockFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"create Loader on " + DEFAULT_CHANNEL);
+		DLog.d(LOG_TAG,"create Loader on " + DEFAULT_CHANNEL);
 		mLoading.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
-   
+        mError.setVisibility(View.GONE);
 		Context context = this.getActivity();
         return ChannelAdapter.createLoader(context, DEFAULT_CHANNEL);
 	}
@@ -114,7 +131,7 @@ public class ChannelFragment extends SherlockFragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNEL);
+		DLog.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNEL);
 		mAdapter.swapCursor(data);
 		mLoading.setVisibility(View.GONE);
 		mError.setVisibility(mAdapter.isEmpty() && mAdapter.hasError() ? View.VISIBLE : View.GONE);
@@ -127,6 +144,7 @@ public class ChannelFragment extends SherlockFragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		// TODO Auto-generated method stub
+		DLog.d(LOG_TAG,"Loader reset on " + arg0.toString());
 		mAdapter.swapCursor(null);
 	}
 }

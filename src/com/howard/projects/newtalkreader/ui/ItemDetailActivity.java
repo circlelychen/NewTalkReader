@@ -169,6 +169,14 @@ class NewsLoader extends AsyncTaskLoader<NewsEntity>{
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
+	
+	/*
+	 * Must override this callback function to make loader forceLoad instead of directly call forceLoad in Activity/Fragment*/
+	@Override
+	protected void onStartLoading() {
+		// this is tentitive solution -- need to be refined
+		forceLoad();
+	}
 
 	@Override
 	public NewsEntity loadInBackground() {

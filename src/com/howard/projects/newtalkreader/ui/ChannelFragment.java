@@ -16,7 +16,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +23,11 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.feeds.FeedExtras;
 import com.google.android.imageloader.ImageLoader;
+import com.google.android.imageloader.ImageLoader.BindResult;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
@@ -201,7 +200,12 @@ class ChannelAdapter extends CursorAdapter implements AdapterView.OnItemClickLis
         Element imgEle = content.select("img").first();
         if(imgEle != null){
         	DLog.i(LOG_TAG, "thumbnail url: " + imgEle.attr("src"));
-        	this.mImageLoader.bind(this, viewHolder.iv_thumbnail, imgEle.attr("src"));
+        	BindResult bindResult = this.mImageLoader.bind(this, viewHolder.iv_thumbnail, imgEle.attr("src"));
+        	if(bindResult == BindResult.LOADING){
+        		viewHolder.iv_thumbnail.setImageResource(R.drawable.rss_item_thumbnail);
+        	}else if(bindResult == BindResult.ERROR){
+        		viewHolder.iv_thumbnail.setImageResource(R.drawable.ic_error);
+        	}
         	imgEle.remove();
         }
         //set rss_description values

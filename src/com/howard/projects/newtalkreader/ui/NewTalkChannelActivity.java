@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.app.ResourceFactory;
 import com.howard.projects.newtalkreader.ui.phone.ChannelsPagerFragment;
@@ -127,6 +131,17 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 		}
 		return super.onOptionsItemSelected(item);
 		
+	}
+
+	private void showVersionDialog() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "showVersionDialog", Toast.LENGTH_SHORT).show();
+		
+	}
+
+	private void showAutherDialog() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "showAutherDialog", Toast.LENGTH_SHORT).show();
 	}
 
 	private void restoreSelection(Bundle savedInstanceState) {

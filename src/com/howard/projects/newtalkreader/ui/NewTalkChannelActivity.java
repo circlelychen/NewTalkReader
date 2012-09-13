@@ -104,7 +104,31 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 		outState.putInt(SAVED_SELECTED_CATEGORY, mSelectedCategory);
 		outState.putInt(SAVED_SELECTED_CHANNEL, mSelectedChannel);
 	}
-    
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.activity_new_talk_channel, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		int id = item.getItemId();
+		switch(id){
+		case R.id.menu_author:
+			showAutherDialog();
+			break;
+		case R.id.menu_version:
+			showVersionDialog();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+		
+	}
+
 	private void restoreSelection(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);

@@ -128,6 +128,9 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 		case R.id.menu_version:
 			showVersionDialog();
 			break;
+		case R.id.menu_customized:
+			showCustomizedDialog();
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 		
@@ -142,6 +145,11 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 	private void showAutherDialog() {
 		// TODO Auto-generated method stub
 		Toast.makeText(this, "showAutherDialog", Toast.LENGTH_SHORT).show();
+	}
+	
+	private void showCustomizedDialog(){
+		ChannelSelectionDialogFragment dfg = ChannelSelectionDialogFragment.newInstance(this,mSelectedCategory);
+		dfg.show(this.getSupportFragmentManager(), "ChannelSelection");
 	}
 
 	private void restoreSelection(Bundle savedInstanceState) {

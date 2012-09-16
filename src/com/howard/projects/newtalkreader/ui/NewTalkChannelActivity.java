@@ -182,8 +182,8 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 		if (!mDualPane) {
 			ChannelsPagerFragment frag = (ChannelsPagerFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.fragment_channels_items);
-//			frag.loadChannels(mSelectedCategory);
-//			onChannelSelected(mSelectedChannel);
+			frag.loadSource(mSelectedCategory);
+			//onChannelSelected(mSelectedChannel);
 		} else {
 //			ChannelsListFragment frag = (ChannelsListFragment) getSupportFragmentManager()
 //					.findFragmentById(R.id.fragment_channels);

@@ -43,15 +43,35 @@ public class ResourceFactory {
 		return  0;
 	}
 	
-	public List<ChannelInfo> getChannelSources(Context context, int type){
-		if(mImportantChannelInfo == null)
-			mImportantChannelInfo = loadImportantChannelInfo(context);
-		return mImportantChannelInfo;
+	public List<ChannelInfo> getChannelSources(Context context, int source){
+		if(source == TYPE_IMPORTANT){
+			if(mImportantChannelInfo == null)
+				mImportantChannelInfo = loadImportantChannelInfo(context);
+			return mImportantChannelInfo;
+		}else{
+			if(mTopicChannelInfo == null)
+				mTopicChannelInfo = loadTopicChannelInfo(context);
+			return mTopicChannelInfo;
+		}
 	}
 	
 	private List<ChannelInfo> loadImportantChannelInfo(Context context){
 		String [] channelNames = context.getResources().getStringArray(R.array.channel_category);
 		String [] channelLinks = context.getResources().getStringArray(R.array.channel_link);
+		if(channelNames.length != channelLinks.length)
+			return null;
+		
+		int size = channelNames.length;
+		List<ChannelInfo> channelResources = new ArrayList<ChannelInfo>();
+		for (int i = 0 ; i < size ; i++){
+			channelResources.add(new ChannelInfo(channelNames[i], channelLinks[i]));
+		}
+		return channelResources;
+	}
+	
+	private List<ChannelInfo> loadTopicChannelInfo(Context context){
+		String [] channelNames = context.getResources().getStringArray(R.array.channel_category_test);
+		String [] channelLinks = context.getResources().getStringArray(R.array.channel_link_test);
 		if(channelNames.length != channelLinks.length)
 			return null;
 		

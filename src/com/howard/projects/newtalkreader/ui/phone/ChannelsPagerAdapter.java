@@ -55,7 +55,7 @@ public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
 	}
 	
 	public void setSource(int source){
-		CONTENT = ResourceFactory.getInstance().getChannelSources(mContext, source);
+		CONTENT = ResourceFactory.getInstance().getChannelSources(source);
 		this.notifyDataSetChanged();
 	}
 	

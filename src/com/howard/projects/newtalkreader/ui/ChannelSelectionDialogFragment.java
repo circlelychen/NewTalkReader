@@ -40,7 +40,7 @@ public class ChannelSelectionDialogFragment extends SherlockDialogFragment {
 	public static ChannelSelectionDialogFragment newInstance(Context _context, int source){
 		ChannelSelectionDialogFragment fg = new ChannelSelectionDialogFragment();
 		
-		List<ChannelInfo> channels = ResourceFactory.getInstance().getChannelSources(_context, source);
+		List<ChannelInfo> channels = ResourceFactory.getInstance().getChannelSources(source);
 		
 		List<String> channelNames = new ArrayList<String>();
 		for(int i=0 ; i < channels.size(); i++){

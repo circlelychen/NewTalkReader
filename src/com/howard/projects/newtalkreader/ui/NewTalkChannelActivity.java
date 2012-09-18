@@ -161,8 +161,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 			mSelectedCategory = prefs.getInt(SAVED_SELECTED_CATEGORY, 
 					ResourceFactory.TYPE_IMPORTANT);
 			mSelectedChannel = prefs.getInt(SAVED_SELECTED_CHANNEL,
-					ResourceFactory.getInstance().getDefaultChannelIndex(
-							this.getApplication()));
+					ResourceFactory.getInstance().getDefaultChannelIndex());
 		}
 		this.onCategorySelected(mSelectedCategory);
 		this.onChannelSelected(mSelectedChannel);

@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" />
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar.ForceOverflow" />
     
     <style name="ChannelItemRow" >
         <item name="android:layout_width">fill_parent</item>

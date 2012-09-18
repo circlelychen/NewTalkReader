@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.app.ResourceFactory;
 import com.howard.projects.newtalkreader.ui.phone.ChannelsPagerFragment;
@@ -104,7 +108,50 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 		outState.putInt(SAVED_SELECTED_CATEGORY, mSelectedCategory);
 		outState.putInt(SAVED_SELECTED_CHANNEL, mSelectedChannel);
 	}
-    
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.activity_new_talk_channel, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		int id = item.getItemId();
+		switch(id){
+		case R.id.menu_author:
+			showAutherDialog();
+			break;
+		case R.id.menu_version:
+			showVersionDialog();
+			break;
+		case R.id.menu_customized:
+			showCustomizedDialog();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+		
+	}
+
+	private void showVersionDialog() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "showVersionDialog", Toast.LENGTH_SHORT).show();
+		
+	}
+
+	private void showAutherDialog() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "showAutherDialog", Toast.LENGTH_SHORT).show();
+	}
+	
+	private void showCustomizedDialog(){
+		ChannelSelectionDialogFragment dfg = ChannelSelectionDialogFragment.newInstance(this,mSelectedCategory);
+		dfg.show(this.getSupportFragmentManager(), "ChannelSelection");
+	}
+
 	private void restoreSelection(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			mSelectedCategory = savedInstanceState.getInt(SAVED_SELECTED_CATEGORY);
@@ -114,8 +161,7 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 			mSelectedCategory = prefs.getInt(SAVED_SELECTED_CATEGORY, 
 					ResourceFactory.TYPE_IMPORTANT);
 			mSelectedChannel = prefs.getInt(SAVED_SELECTED_CHANNEL,
-					ResourceFactory.getInstance().getDefaultChannelIndex(
-							this.getApplication()));
+					ResourceFactory.getInstance().getDefaultChannelIndex());
 		}
 		this.onCategorySelected(mSelectedCategory);
 		this.onChannelSelected(mSelectedChannel);
@@ -135,8 +181,8 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 		if (!mDualPane) {
 			ChannelsPagerFragment frag = (ChannelsPagerFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.fragment_channels_items);
-//			frag.loadChannels(mSelectedCategory);
-//			onChannelSelected(mSelectedChannel);
+			frag.loadSource(mSelectedCategory);
+			//onChannelSelected(mSelectedChannel);
 		} else {
 //			ChannelsListFragment frag = (ChannelsListFragment) getSupportFragmentManager()
 //					.findFragmentById(R.id.fragment_channels);

@@ -16,7 +16,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +23,17 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.feeds.FeedExtras;
 import com.google.android.imageloader.ImageLoader;
+import com.google.android.imageloader.ImageLoader.BindResult;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
 
 public class ChannelFragment extends SherlockFragment implements
-		LoaderManager.LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener {
+		LoaderManager.LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener, View.OnClickListener {
 
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
@@ -66,6 +65,17 @@ public class ChannelFragment extends SherlockFragment implements
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		
+		//initialize loader in onActivityCreated in Fragment 
+		this.getActivity().getSupportLoaderManager().initLoader(DEFAULT_CHANNEL.hashCode(), 
+				Bundle.EMPTY, 
+				this);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -81,18 +91,32 @@ public class ChannelFragment extends SherlockFragment implements
 		View root = inflater.inflate(R.layout.newtalk_items_list,container, false);
 		mLoading = (View)root.findViewById(R.id.loading);
 		mError = (View)root.findViewById(R.id.error);
+		View retryView = (View)mError.findViewById(R.id.retry);
+		retryView.setOnClickListener(this);
 		
 		mItemsList = (ListView) root.findViewById(android.R.id.list);
 		mAdapter = new ChannelAdapter(this.getActivity());
 		mItemsList.setAdapter(mAdapter);
 		mItemsList.setOnItemClickListener(mAdapter);
-		this.getActivity().getSupportLoaderManager().initLoader(DEFAULT_CHANNEL.hashCode(), 
-				Bundle.EMPTY, 
-				this);
 		
 		return root;
 		
     }
+	
+	private void reload() {
+        this.getActivity().getSupportLoaderManager().restartLoader(DEFAULT_CHANNEL.hashCode(), Bundle.EMPTY, this);
+    }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+        case R.id.retry:
+            reload();
+            break;
+		}
+		
+	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -104,9 +128,9 @@ public class ChannelFragment extends SherlockFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"create Loader on " + DEFAULT_CHANNEL);
+		DLog.d(LOG_TAG,"create Loader on " + DEFAULT_CHANNEL);
 		mLoading.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
-   
+        mError.setVisibility(View.GONE);
 		Context context = this.getActivity();
         return ChannelAdapter.createLoader(context, DEFAULT_CHANNEL);
 	}
@@ -114,7 +138,7 @@ public class ChannelFragment extends SherlockFragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		// TODO Auto-generated method stub
-		Log.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNEL);
+		DLog.d(LOG_TAG,"Loader finished on " + DEFAULT_CHANNEL);
 		mAdapter.swapCursor(data);
 		mLoading.setVisibility(View.GONE);
 		mError.setVisibility(mAdapter.isEmpty() && mAdapter.hasError() ? View.VISIBLE : View.GONE);
@@ -127,6 +151,7 @@ public class ChannelFragment extends SherlockFragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		// TODO Auto-generated method stub
+		DLog.d(LOG_TAG,"Loader reset on " + arg0.toString());
 		mAdapter.swapCursor(null);
 	}
 }
@@ -175,7 +200,12 @@ class ChannelAdapter extends CursorAdapter implements AdapterView.OnItemClickLis
         Element imgEle = content.select("img").first();
         if(imgEle != null){
         	DLog.i(LOG_TAG, "thumbnail url: " + imgEle.attr("src"));
-        	this.mImageLoader.bind(this, viewHolder.iv_thumbnail, imgEle.attr("src"));
+        	BindResult bindResult = this.mImageLoader.bind(this, viewHolder.iv_thumbnail, imgEle.attr("src"));
+        	if(bindResult == BindResult.LOADING){
+        		viewHolder.iv_thumbnail.setImageResource(R.drawable.rss_item_thumbnail);
+        	}else if(bindResult == BindResult.ERROR){
+        		viewHolder.iv_thumbnail.setImageResource(R.drawable.ic_error);
+        	}
         	imgEle.remove();
         }
         //set rss_description values

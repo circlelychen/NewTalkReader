@@ -27,7 +27,7 @@ import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.utils.DLog;
 
 public class ItemDetailActivity extends SherlockFragmentActivity implements
-		LoaderManager.LoaderCallbacks<NewsEntity>{
+		LoaderManager.LoaderCallbacks<NewsEntity>, View.OnClickListener{
 
 	private static String TAG = ItemDetailActivity.class.getSimpleName();
 	private Uri mItemUri; 
@@ -41,6 +41,7 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		DLog.d(TAG, "onCreate()");
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		Bundle bundle = this.getIntent().getExtras();
@@ -52,19 +53,12 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 		mImage = (ImageView) this.findViewById(R.id.image);
 		mLoading = (View) this.findViewById(R.id.loading);
 		mError = (View) this.findViewById(R.id.error);
+		mError.findViewById(R.id.retry).setOnClickListener(this);
 		
 		mImageLoader = new ImageLoader();
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		
 		this.getSupportLoaderManager().initLoader(mItemUri.hashCode(), 
 				Bundle.EMPTY, 
-				this).forceLoad();
-				
+				this);
 	}
 
 	@Override
@@ -79,12 +73,29 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 	
+	private void reload() {
+        getSupportLoaderManager().restartLoader(mItemUri.hashCode(), Bundle.EMPTY, this);
+    }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+        case R.id.retry:
+            reload();
+            break;
+		}
+		
+	}
 	
 	@Override
 	public Loader<NewsEntity> onCreateLoader(int arg0, Bundle arg1) {
 		// TODO Auto-generated method stub
 		DLog.d(TAG,"create Loader on " + mItemUri);
 		
+		mLoading.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.GONE);
+        
 		return new NewsLoader(this, mItemUri);
 	}
 
@@ -96,7 +107,7 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 		Bundle bundle = this.getIntent().getExtras();
 		mTitle.setText(bundle.getString("_title"));
 		
-		DLog.i(TAG,data.toString());
+		
 		mDescription.setText(Html.fromHtml(data.content));
 		if(data.imgUrl == Uri.EMPTY){
 			mImage.setImageBitmap(null);
@@ -106,23 +117,26 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 			mImage.setVisibility(View.VISIBLE);
 		}
 		
-		
-		mTitle.setVisibility(View.VISIBLE);
-		mDescription.setVisibility(View.VISIBLE);
 		mLoading.setVisibility(View.GONE);
-		mError.setVisibility(View.GONE);
-		//mError.setVisibility(mAdapter.isEmpty() && mAdapter.hasError() ? View.VISIBLE : View.GONE);
+		mTitle.setVisibility( data.isEmpty()? View.GONE : View.VISIBLE);
+		mDescription.setVisibility( data.isEmpty()? View.GONE : View.VISIBLE);
+		mError.setVisibility( data.isEmpty()? View.VISIBLE : View.GONE);
 	}
 
 	@Override
 	public void onLoaderReset(Loader<NewsEntity> arg0) {
 		// TODO Auto-generated method stub
+		DLog.d(TAG,"Loader reseted on " + arg0.toString());  
+		mImage.setImageBitmap(null);
+		mDescription.setText("Empty");
 	}
+
 }
 
 class NewsEntity {
 	public Uri imgUrl; 
 	public String content;
+	
 	public NewsEntity(){
 		reset();
 	}
@@ -133,6 +147,9 @@ class NewsEntity {
 		this.content = "";
 	}
 	
+	public boolean isEmpty(){
+		return content.equals("")? true : false;
+	}
 	public String toString(){
 		return "NewsEntity is [ imgUrl: " + this.imgUrl + " ] and [ content: " + this.content + " ]";
 	}
@@ -152,6 +169,14 @@ class NewsLoader extends AsyncTaskLoader<NewsEntity>{
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
+	
+	/*
+	 * Must override this callback function to make loader forceLoad instead of directly call forceLoad in Activity/Fragment*/
+	@Override
+	protected void onStartLoading() {
+		// this is tentitive solution -- need to be refined
+		forceLoad();
+	}
 
 	@Override
 	public NewsEntity loadInBackground() {
@@ -163,8 +188,8 @@ class NewsLoader extends AsyncTaskLoader<NewsEntity>{
 		try {
 			doc = Jsoup.connect(mUrl.toString()).get();
 		}catch (IOException e) {
-			DLog.e(TAG, "IOException Exception (Message):" + e.getMessage());
-			DLog.e(TAG, "IOException Exception (Cause):" + e.getCause());
+			DLog.i(TAG, "IOException Exception (Message):" + e.getMessage());
+			DLog.i(TAG, "IOException Exception (Cause):" + e.getCause());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return entity;
@@ -173,20 +198,20 @@ class NewsLoader extends AsyncTaskLoader<NewsEntity>{
 		//parse and fetch thumbnail url
 		try{
 			Element imageElement = doc.select("div.news_ctxt_area_pic a img").first();
-			DLog.i(TAG, "select div.news_ctxt_area_pic a img :" + imageElement.attr("src"));
+			DLog.d(TAG, "select div.news_ctxt_area_pic a img :" + imageElement.attr("src"));
 			entity.imgUrl = Uri.parse(imageElement.attr("src"));
 		}catch(NullPointerException e){
-			DLog.e(TAG, "NullPointer Exception : parse and fetch thumbnail url");
+			DLog.i(TAG, "NullPointer Exception : parse and fetch thumbnail url");
 			e.printStackTrace();
 		}
 		
 		//parse and fetch text coontent
 		try{
 			Element textElement = doc.select("div.news_ctxt_area_word").first();
-			DLog.i(TAG, "select div.news_ctxt_area_word : " + textElement.text());
+			DLog.d(TAG, "select div.news_ctxt_area_word : " + textElement.text());
 			entity.content = new String(textElement.html());
 		}catch(NullPointerException e){
-			DLog.e(TAG, "NullPointer Exception : parse and fetch text coontent");
+			DLog.i(TAG, "NullPointer Exception : parse and fetch text coontent");
 			e.printStackTrace();
 		}
 		

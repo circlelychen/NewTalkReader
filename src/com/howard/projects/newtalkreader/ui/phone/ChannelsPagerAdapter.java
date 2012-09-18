@@ -18,11 +18,14 @@ public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
 	
 	private static String TAG = ChannelsPagerAdapter.class.getSimpleName();
 	
+	private Context mContext;
 	private List<ChannelInfo> CONTENT;
 
 	public ChannelsPagerAdapter(Context context ,FragmentManager fm) {
 		super(fm);
-		CONTENT = ResourceFactory.getInstance().getChannelSources(context, ResourceFactory.TYPE_IMPORTANT);
+		mContext = context;
+		setSource(ResourceFactory.TYPE_IMPORTANT);
+		
 	}
 
 	@Override
@@ -41,4 +44,19 @@ public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return CONTENT.get(position % CONTENT.size()).getName();
     }
+	
+	/*
+	 * Override this method : return POSITION_NONE. view pager will remove all views and reload them all.
+	 * reference: http://stackoverflow.com/questions/7263291/viewpager-pageradapter-not-updating-the-view
+	 * */
+	@Override
+	public int getItemPosition(Object object) {
+	    return POSITION_NONE;
+	}
+	
+	public void setSource(int source){
+		CONTENT = ResourceFactory.getInstance().getChannelSources(source);
+		this.notifyDataSetChanged();
+	}
+	
 }

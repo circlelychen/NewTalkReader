@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" />
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar.ForceOverflow" />
     
     <style name="ChannelItemRow" >
         <item name="android:layout_width">fill_parent</item>
@@ -26,14 +26,12 @@
         <item name="android:layout_alignParentTop">true</item>
     	<item name="android:textColor">@color/RssItemTitlePlaintextColor</item>
     	<item name="android:textStyle">bold</item>
-    	<item name="android:text">RssItemTitlePlaintext</item>
     </style>
     <style name="RssItemDescription" parent="@android:style/TextAppearance.Small" >
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/RssItemDescriptionColor</item>
         <item name="android:maxLines">4</item>
-        <item name="android:text">RssItemDescription</item>
     </style>
     
     <style name="NewsTitle" parent="@android:style/TextAppearance.Large" >
@@ -42,13 +40,11 @@
         <item name="android:layout_alignParentTop">true</item>
     	<item name="android:textColor">@color/RssItemTitlePlaintextColor</item>
     	<item name="android:textStyle">bold</item>
-    	<item name="android:text">RssItemTitlePlaintext</item>
     </style>
     <style name="NewsDescription" parent="@android:style/TextAppearance.Medium" >
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/RssItemDescriptionColor</item>
-        <item name="android:text">RssItemDescription</item>
     </style>
     <style name="NewsThumbnail" >
         <item name="android:layout_width">fill_parent</item>

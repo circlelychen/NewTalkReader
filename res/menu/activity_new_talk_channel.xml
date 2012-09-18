@@ -1,6 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
+    <item android:id="@+id/menu_author"
+        android:title="@string/menu_author"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/menu_version"
+        android:title="@string/menu_version"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_customized"
+          android:icon="@drawable/ic_collections_labels_4"
+          android:title="Customized"
+          android:showAsAction="always" />
 </menu>

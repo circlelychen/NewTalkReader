@@ -4,7 +4,8 @@
     <string name="menu_author">關於作者</string>
     <string name="menu_version">版本資訊</string>
     <string name="title_activity_new_talk_channel">新頭殼</string>
-
+	<string name="title_activity_new_talk_channel_selection">訂閱頻道</string>
+	
     <string name="newtalk_message_loading">載入中 ...</string>
     <string name="newtalk_retry">重試</string>
     <string name="newtalk_error_unknown">發生錯誤</string>
@@ -13,8 +14,8 @@
     
     <!-- Rss catogroy for viewing -->
     <string-array name="rss_category">
-        <item>要聞</item>
-        <item>議題</item>
+        <item>即時要聞</item>
+        <item>熱門議題</item>
     </string-array>
     
     <!-- Channel catogroy for viewing -->

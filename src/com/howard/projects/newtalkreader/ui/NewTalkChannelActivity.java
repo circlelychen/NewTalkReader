@@ -1,5 +1,6 @@
 package com.howard.projects.newtalkreader.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -89,6 +90,9 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 		} else {
 			
 		}
+    	
+    	this.onCategorySelected(mSelectedCategory);
+		this.onChannelSelected(mSelectedChannel);
     }
     
 	@Override
@@ -148,8 +152,10 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 	}
 	
 	private void showCustomizedDialog(){
-		ChannelSelectionDialogFragment dfg = ChannelSelectionDialogFragment.newInstance(this,mSelectedCategory);
-		dfg.show(this.getSupportFragmentManager(), "ChannelSelection");
+		Intent intent = new Intent();
+		intent.setClass(this, ChannelSelectionActivity.class);
+		intent.putExtra("_source", mSelectedCategory);
+		this.startActivity(intent);
 	}
 
 	private void restoreSelection(Bundle savedInstanceState) {
@@ -182,7 +188,6 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 			ChannelsPagerFragment frag = (ChannelsPagerFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.fragment_channels_items);
 			frag.loadSource(mSelectedCategory);
-			//onChannelSelected(mSelectedChannel);
 		} else {
 //			ChannelsListFragment frag = (ChannelsListFragment) getSupportFragmentManager()
 //					.findFragmentById(R.id.fragment_channels);

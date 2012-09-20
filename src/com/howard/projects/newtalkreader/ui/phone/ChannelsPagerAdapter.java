@@ -30,6 +30,7 @@ public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getCount() {
+		DLog.d(TAG,"getCount("+CONTENT.size()+")");
 		return CONTENT.size();
 	}
 
@@ -55,7 +56,7 @@ public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
 	}
 	
 	public void setSource(int source){
-		CONTENT = ResourceFactory.getInstance().getChannelSources(source);
+		CONTENT = ResourceFactory.getInstance().getSelectedSources(source);
 		this.notifyDataSetChanged();
 	}
 	

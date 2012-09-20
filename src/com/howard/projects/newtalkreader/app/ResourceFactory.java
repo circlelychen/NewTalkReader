@@ -57,22 +57,32 @@ public class ResourceFactory {
 	}
 	
 	public void initDatabase(){
-		String [] channelNames  = mContext.getResources().getStringArray(R.array.channel_category);
-		String [] channelLinks = mContext.getResources().getStringArray(R.array.channel_link);
+		List<ChannelInfo> channels = getOriginSources(TYPE_IMPORTANT);
+		insertDatabase(TYPE_IMPORTANT, channels);
+	}
+	
+	public void cleanDatabase(int source){
 		
+		SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+		String slection = SourceTable.KEY_TYPE + "=?";
+		String [] selectionArgs = {""+source};
+		mDb.delete(SourceTable.SOURCE_TABLE_NAME, slection, selectionArgs);
+	}
+	
+	public void insertDatabase(int source,List<ChannelInfo> list){
 		
 		SQLiteDatabase mDb = mDbHelper.getWritableDatabase();
-		int size = channelNames.length;
+		int size = list.size();
 		for (int i = 0 ; i < size ; i++){
 			ContentValues cv = new ContentValues();
-			cv.put(SourceTable.KEY_TYPE, TYPE_IMPORTANT);
-			cv.put(SourceTable.KEY_NAME, channelNames[i]);
-			cv.put(SourceTable.KEY_URL, channelLinks[i]);
+			cv.put(SourceTable.KEY_TYPE, source);
+			cv.put(SourceTable.KEY_NAME, list.get(i).getName());
+			cv.put(SourceTable.KEY_URL, list.get(i).getLink());
 			mDb.insert(SourceTable.SOURCE_TABLE_NAME, null, cv);
 		}
 	}
 	
-	public List<ChannelInfo> getChannelSources(int source){
+	public List<ChannelInfo> getSelectedSources(int source){
 		
 		SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
 		
@@ -95,6 +105,22 @@ public class ResourceFactory {
 		mDb.close();
 		return channels;
 	}
+	
+	public List<ChannelInfo> getOriginSources(int source){
+		
+		List<ChannelInfo> channels = new ArrayList<ChannelInfo>();
+		if(source == TYPE_IMPORTANT){
+			String [] channelNames  = mContext.getResources().getStringArray(R.array.channel_category);
+			String [] channelLinks = mContext.getResources().getStringArray(R.array.channel_link);
+			int size = channelNames.length;
+			for (int i = 0 ; i < size ; i++){
+				channels.add(new ChannelInfo(channelNames[i],channelLinks[i]));
+			}
+		}
+		return channels;
+	}
+	
+	
 	
 	private ChannelInfo curcorToChannelInfo(Cursor cursor){
 		

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.howard.projects.newtalkreader"
-    android:versionCode="2"
+    android:versionCode="3"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -29,6 +29,11 @@
         <activity
             android:name=".ui.ItemDetailActivity"
             android:label="@string/title_activity_new_talk_channel">
+        </activity>
+        <activity
+            android:name=".ui.ChannelSelectionActivity"
+            android:theme="@style/AppDialogTheme"
+            android:label="@string/title_activity_new_talk_channel_selection">
         </activity>
     </application>
 

@@ -18,7 +18,7 @@ public class NewTalkApplication extends Application {
 		super.onCreate();
 		DLog.i(TAG, "onCreate()");
 		ResourceFactory.getInstance().init(this);
-		List<ChannelInfo> channels = ResourceFactory.getInstance().getChannelSources(ResourceFactory.TYPE_IMPORTANT);
+		List<ChannelInfo> channels = ResourceFactory.getInstance().getSelectedSources(ResourceFactory.TYPE_IMPORTANT);
 		if(channels.isEmpty()){
 			ResourceFactory.getInstance().initDatabase();
 		}

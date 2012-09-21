@@ -30,7 +30,6 @@ public class ChannelsPagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getCount() {
-		DLog.d(TAG,"getCount("+CONTENT.size()+")");
 		return CONTENT.size();
 	}
 

@@ -69,6 +69,10 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
  							return true;
  						}
  					});
+ 			
+ 			ChannelsPagerFragment fragment = (ChannelsPagerFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.fragment_channels_items);
+			fragment.setOnChannelSelectedListener(this);
  		} else {
 // 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
  		}
@@ -84,15 +88,10 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
     	getSupportActionBar().setSelectedNavigationItem(mSelectedCategory);
     	
     	if (!mDualPane) {
-			ChannelsPagerFragment fragment = (ChannelsPagerFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.fragment_channels_items);
-			fragment.setOnChannelSelectedListener(this);
-		} else {
-			
+			ChannelsPagerFragment frag = (ChannelsPagerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_channels_items);
+			frag.loadSource(mSelectedCategory);
+			frag.loadChannel(mSelectedChannel);
 		}
-    	
-    	this.onCategorySelected(mSelectedCategory);
-		this.onChannelSelected(mSelectedChannel);
     }
     
 	@Override
@@ -169,8 +168,6 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 			mSelectedChannel = prefs.getInt(SAVED_SELECTED_CHANNEL,
 					ResourceFactory.getInstance().getDefaultChannelIndex());
 		}
-		this.onCategorySelected(mSelectedCategory);
-		this.onChannelSelected(mSelectedChannel);
 	}
 	
 	private void onCategorySelected(int category) {

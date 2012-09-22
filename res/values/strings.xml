@@ -7,6 +7,7 @@
 	<string name="title_activity_new_talk_channel_selection">訂閱頻道</string>
 	
     <string name="newtalk_message_loading">載入中 ...</string>
+    <string name="newtalk_message_empty">無資料</string>
     <string name="newtalk_retry">重試</string>
     <string name="newtalk_error_unknown">發生錯誤</string>
     <string name="settings_feedback">問題回報</string>

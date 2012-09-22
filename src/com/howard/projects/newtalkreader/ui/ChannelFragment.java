@@ -42,6 +42,7 @@ public class ChannelFragment extends SherlockFragment implements
 	private ListView mItemsList;
 	private ChannelAdapter mAdapter;
 	private View mLoading;
+	private View mEmpty;
 	private View mError;
 	
 	
@@ -91,6 +92,7 @@ public class ChannelFragment extends SherlockFragment implements
 		View root = inflater.inflate(R.layout.newtalk_items_list,container, false);
 		mLoading = (View)root.findViewById(R.id.loading);
 		mError = (View)root.findViewById(R.id.error);
+		mEmpty = (View) root.findViewById(R.id.empty);
 		View retryView = (View)mError.findViewById(R.id.retry);
 		retryView.setOnClickListener(this);
 		
@@ -142,6 +144,7 @@ public class ChannelFragment extends SherlockFragment implements
 		mAdapter.swapCursor(data);
 		mLoading.setVisibility(View.GONE);
 		mError.setVisibility(mAdapter.isEmpty() && mAdapter.hasError() ? View.VISIBLE : View.GONE);
+		mEmpty.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
 		
 		mItemsList.setVisibility(View.VISIBLE);
 		
@@ -174,7 +177,7 @@ class ChannelAdapter extends CursorAdapter implements AdapterView.OnItemClickLis
     }
 	
 	 public static Loader<Cursor> createLoader(Context context, Uri uri) {
-		 return new CursorLoader(context, uri, PROJECTION, null, null, null);
+		 return new CursorLoader(context, uri, PROJECTION, null, null, "pubDate DESC");
 	 }
 
 	@Override

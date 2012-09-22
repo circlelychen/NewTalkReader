@@ -141,13 +141,20 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 
 	private void showVersionDialog() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "showVersionDialog", Toast.LENGTH_SHORT).show();
-		
+		Intent intent = new Intent();
+		intent.setClass(this, HtmlDialogActivity.class);
+		intent.putExtra("_resId", R.raw.version);
+		intent.putExtra("_titleId", R.string.menu_version);
+		this.startActivity(intent);
 	}
 
 	private void showAutherDialog() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "showAutherDialog", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent();
+		intent.setClass(this, HtmlDialogActivity.class);
+		intent.putExtra("_resId", R.raw.about);
+		intent.putExtra("_titleId", R.string.menu_author);
+		this.startActivity(intent);
 	}
 	
 	private void showCustomizedDialog(){

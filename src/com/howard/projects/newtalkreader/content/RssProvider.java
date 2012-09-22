@@ -16,6 +16,13 @@
 
 package com.howard.projects.newtalkreader.content;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
@@ -35,8 +42,9 @@ import com.howard.projects.newtalkreader.provider.RssContract.Items;
  * */
 public class RssProvider extends ContentProvider {
 
+	private static final String TAG = RssProvider.class.getSimpleName();
+	
     private static final int CHANNEL_ITEMS = 1;
-
     private static final int CHANNEL_ITEM = 2;
 
     private UriMatcher mUriMatcher;
@@ -85,10 +93,67 @@ public class RssProvider extends ContentProvider {
             String feedUrl = Items.getChannelUrl(uri);
             Uri feedUri = Uri.parse(feedUrl);
             FeedLoader.loadFeed(handler, feedUri);
+            
+            /*
+             * This segments sort order by pubDate
+             * */
+            if("pubDate DESC".equals(sortOrder)){
+            	//sorted by pubDate in desc order
+            	
+            	List<SortElement> list = new ArrayList<SortElement>();
+            	output.moveToFirst();
+            	do{
+            		SortElement el = new SortElement();
+            		el._ID = output.getString(output.getColumnIndex(Items._ID));
+            		el.TITLE_PLAINTEXT = output.getString(output.getColumnIndex(Items.TITLE_PLAINTEXT));
+            		el.DESCRIPTION = output.getString(output.getColumnIndex(Items.DESCRIPTION));
+            		el.PUBDATE = output.getString(output.getColumnIndex(Items.PUBDATE));
+            		el.LINK = output.getString(output.getColumnIndex(Items.LINK));
+            		list.add(el);
+            	}while(output.moveToNext());
+            	
+            	Collections.sort(list, Collections.reverseOrder());
+            	
+            	MatrixCursor sorted = new MatrixCursor(projection);
+            	for(int i = 0 ; i < list.size() ; i++){
+            		// to be determined
+            		SortElement el = list.get(i);
+            		sorted.addRow(new Object[] {el._ID, el.TITLE_PLAINTEXT, el.DESCRIPTION, el.LINK, el.PUBDATE});
+            	}
+            	output = sorted;
+            }
+            
             return FeedProvider.feedCursor(output, extras);
+            
         } catch (Throwable t) {
             return FeedProvider.errorCursor(output, extras, t, null);
         }
+    }
+    
+    static class SortElement implements Comparable<SortElement>{
+
+    	public String _ID;
+    	public String TITLE_PLAINTEXT;
+    	public String DESCRIPTION;
+    	public String LINK; 
+    	public String PUBDATE;
+		@Override
+		public int compareTo(SortElement another) {
+			// TODO Auto-generated method stub
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        	try {
+				Date thisDate = format.parse(this.PUBDATE);
+				Date argumentDate = format.parse(another.PUBDATE);
+				
+				return thisDate.compareTo(argumentDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return 0;
+			}
+		}
+    	
     }
 
     @Override

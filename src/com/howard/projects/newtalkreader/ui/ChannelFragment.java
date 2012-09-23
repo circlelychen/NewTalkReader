@@ -144,7 +144,7 @@ public class ChannelFragment extends SherlockFragment implements
 		mAdapter.swapCursor(data);
 		mLoading.setVisibility(View.GONE);
 		mError.setVisibility(mAdapter.isEmpty() && mAdapter.hasError() ? View.VISIBLE : View.GONE);
-		mEmpty.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
+		mEmpty.setVisibility(mAdapter.isEmpty() && !mAdapter.hasError() ? View.VISIBLE : View.GONE);
 		
 		mItemsList.setVisibility(View.VISIBLE);
 		
@@ -186,12 +186,6 @@ class ChannelAdapter extends CursorAdapter implements AdapterView.OnItemClickLis
 		DLog.d(LOG_TAG,"bindView ");
 		
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
-		
-		//reset all the views with null or default values
-		viewHolder.iv_thumbnail.setImageResource(R.drawable.rss_item_thumbnail);
-		viewHolder.tv_description.setText("");
-		viewHolder.tv_description.setText("");
-		viewHolder.link = null;
 		
 		// set rss_title_plaintext value
 		String title_plaintext = cursor.getString(cursor.getColumnIndex(Items.TITLE_PLAINTEXT));

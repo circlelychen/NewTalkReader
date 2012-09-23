@@ -97,7 +97,7 @@ public class RssProvider extends ContentProvider {
             /*
              * This segments sort order by pubDate
              * */
-            if("pubDate DESC".equals(sortOrder)){
+            if("pubDate DESC".equals(sortOrder) && output.getCount() > 0){
             	//sorted by pubDate in desc order
             	
             	List<SortElement> list = new ArrayList<SortElement>();

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -115,7 +116,11 @@ public class ChannelSelectionActivity extends SherlockFragmentActivity implement
 		}
 		
 		/*Configure List view within Dialog with "adapter" and bind data*/
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, displayNames);
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			adapter = new ArrayAdapter<String>(this, R.layout.abs__list_menu_item_checkbox, displayNames);
+		}else{
+			adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, displayNames);
+		}
 		tagListView.setAdapter(adapter);
 		for(int i = 0 ; i < mapPosChannel.size(); i++){
 			ChannelInfo chinfo = mapPosChannel.get(i);

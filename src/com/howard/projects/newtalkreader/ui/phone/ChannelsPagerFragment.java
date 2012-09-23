@@ -69,9 +69,10 @@ public class ChannelsPagerFragment extends SherlockFragment implements ViewPager
 		mListener = listener;
 	}
 	
-	public void loadSource(int source){
+	public int loadSource(int source){
 		mAdapter.setSource(source);
 		mIndicator.notifyDataSetChanged();
+		return mAdapter.getCount();
 	}
 	
 	public void loadChannel(int channel){

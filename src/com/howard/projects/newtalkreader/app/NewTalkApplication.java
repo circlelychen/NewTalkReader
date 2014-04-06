@@ -1,6 +1,7 @@
 package com.howard.projects.newtalkreader.app;
 
 import java.util.List;
+import java.util.Random;
 
 import android.app.Application;
 
@@ -22,6 +23,10 @@ public class NewTalkApplication extends Application {
 		if(channels.isEmpty()){
 			ResourceFactory.getInstance().initDatabase();
 		}
+		
+		// set http user-agent as null
+		String [] userAgents = this.getResources().getStringArray(R.array.user_agent);
+		System.setProperty("http.agent", userAgents[new Random().nextInt(userAgents.length)]);
 	}
 
 }

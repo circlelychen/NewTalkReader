@@ -52,4 +52,8 @@
         <item>http://newtalk.tw/rss_news.php?oid=11</item>
         <item>http://newtalk.tw/rss_news.php?oid=14</item>
     </string-array>
+    
+    <string-array name="user_agent">
+        <item>Mozilla/5.0</item>
+    </string-array>
 </resources>

@@ -27,10 +27,10 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.feeds.FeedExtras;
 import com.google.android.imageloader.ImageLoader;
-import com.google.android.imageloader.ImageLoader.BindResult;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
+import com.squareup.picasso.Picasso;
 
 public class ChannelFragment extends SherlockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnSharedPreferenceChangeListener, View.OnClickListener {
@@ -197,12 +197,16 @@ class ChannelAdapter extends CursorAdapter implements AdapterView.OnItemClickLis
         Element imgEle = content.select("img").first();
         if(imgEle != null){
         	DLog.i(LOG_TAG, "thumbnail url: " + imgEle.attr("src"));
-        	BindResult bindResult = this.mImageLoader.bind(this, viewHolder.iv_thumbnail, imgEle.attr("src"));
-        	if(bindResult == BindResult.LOADING){
-        		viewHolder.iv_thumbnail.setImageResource(R.drawable.rss_item_thumbnail);
-        	}else if(bindResult == BindResult.ERROR){
-        		viewHolder.iv_thumbnail.setImageResource(R.drawable.ic_error);
-        	}
+        	
+        	Picasso.with(context).load(imgEle.attr("src")).into(viewHolder.iv_thumbnail);
+        	
+//        	BindResult bindResult = this.mImageLoader.bind(this, viewHolder.iv_thumbnail, imgEle.attr("src"));
+//        	if(bindResult == BindResult.LOADING){
+//        		viewHolder.iv_thumbnail.setImageResource(R.drawable.rss_item_thumbnail);
+//        	}else if(bindResult == BindResult.ERROR){
+//        		viewHolder.iv_thumbnail.setImageResource(R.drawable.ic_error);
+//        	}
+        	
         	imgEle.remove();
         }
         //set rss_description values

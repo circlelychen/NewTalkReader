@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.feeds.FeedExtras;
 import com.google.android.imageloader.ImageLoader;
+import com.google.gson.Gson;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;

@@ -5,10 +5,9 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import android.content.Context;
-import android.database.Cursor;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -21,7 +20,9 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import com.google.android.imageloader.ImageLoader;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.utils.DLog;
@@ -38,6 +39,8 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 	private View mLoading;
 	private View mError;
 	private ImageLoader mImageLoader;
+	private ShareActionProvider mShareActionProvider;
+	private String mTitleValue;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 		super.onCreate(savedInstanceState);
 		Bundle bundle = this.getIntent().getExtras();
 		mItemUri = bundle.getParcelable("_link");
+		this.mTitleValue = bundle.getString("_title");
 		
 		setContentView(R.layout.newtalk_item_detail);
 		mTitle = (TextView) this.findViewById(R.id.title);
@@ -63,7 +67,17 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
+		MenuInflater inflater = this.getSupportMenuInflater();
+		inflater.inflate(R.menu.frag_channel_menu, menu);
+		
+		// instantiate intent for share action provider
+		Intent intent = new Intent();
+		intent.setType("text/plaint");
+		intent.putExtra(Intent.EXTRA_SUBJECT, this.mTitleValue);
+		intent.putExtra(Intent.EXTRA_TEXT, this.mItemUri.toString());
+		
+		this.mShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
+		this.mShareActionProvider.setShareIntent(intent);
 		return super.onCreateOptionsMenu(menu);
 	}
 

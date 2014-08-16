@@ -127,34 +127,7 @@ public class ChannelFragment extends SherlockFragment implements
 		}
 		
 	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Auto-generated method stub
-		inflater.inflate(R.menu.frag_channel_menu, menu);
-		
-		// instantiate intent for share action provider
-		Intent intent = new Intent();
-		intent.setType("text/plaint");
-		intent.putExtra(Intent.EXTRA_SUBJECT, "This is shared content");
-		intent.putExtra(Intent.EXTRA_TEXT, DEFAULT_CHANNEL.toString());
-		
-		this.mShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
-		this.mShareActionProvider.setShareIntent(intent);
-		
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		// TODO Auto-generated method stub
-//		switch( item.getItemId()){
-//		case R.id.menu_share:
-//			break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
+	
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {

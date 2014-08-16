@@ -25,9 +25,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import com.google.android.feeds.FeedExtras;
 import com.google.android.imageloader.ImageLoader;
-import com.google.gson.Gson;
 import com.howard.projects.newtalkreader.R;
 import com.howard.projects.newtalkreader.provider.RssContract.Items;
 import com.howard.projects.newtalkreader.utils.DLog;
@@ -38,6 +41,7 @@ public class ChannelFragment extends SherlockFragment implements
 
 	private static final String LOG_TAG = ChannelFragment.class.getSimpleName();
 	
+	private ShareActionProvider mShareActionProvider;
 	private Uri DEFAULT_CHANNEL;
 	
 	private ListView mItemsList;
@@ -84,6 +88,9 @@ public class ChannelFragment extends SherlockFragment implements
 		
 		Bundle bundle = this.getArguments();
 		DEFAULT_CHANNEL = bundle.getParcelable("_url");
+		
+		// enable this fragment to change actionbar menu
+        this.setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -120,6 +127,33 @@ public class ChannelFragment extends SherlockFragment implements
 		}
 		
 	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// TODO Auto-generated method stub
+		inflater.inflate(R.menu.frag_channel_menu, menu);
+		
+		// instantiate intent for share action provider
+		Intent intent = new Intent();
+		intent.setType("text/plaint");
+		intent.putExtra(Intent.EXTRA_SUBJECT, "This is shared content");
+		intent.putExtra(Intent.EXTRA_TEXT, DEFAULT_CHANNEL.toString());
+		
+		this.mShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
+		this.mShareActionProvider.setShareIntent(intent);
+		
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// TODO Auto-generated method stub
+//		switch( item.getItemId()){
+//		case R.id.menu_share:
+//			break;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,

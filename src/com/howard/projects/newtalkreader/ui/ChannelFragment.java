@@ -88,9 +88,6 @@ public class ChannelFragment extends SherlockFragment implements
 		
 		Bundle bundle = this.getArguments();
 		DEFAULT_CHANNEL = bundle.getParcelable("_url");
-		
-		// enable this fragment to change actionbar menu
-        this.setHasOptionsMenu(true);
 	}
 
 	@Override

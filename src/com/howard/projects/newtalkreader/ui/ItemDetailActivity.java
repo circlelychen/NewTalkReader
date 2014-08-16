@@ -71,13 +71,13 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 		inflater.inflate(R.menu.frag_channel_menu, menu);
 		
 		// instantiate intent for share action provider
-		Intent intent = new Intent();
-		intent.setType("text/plaint");
-		intent.putExtra(Intent.EXTRA_SUBJECT, this.mTitleValue);
-		intent.putExtra(Intent.EXTRA_TEXT, this.mItemUri.toString());
-		
-		this.mShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
-		this.mShareActionProvider.setShareIntent(intent);
+//		Intent intent = new Intent();
+//		intent.setType("text/plaint");
+//		intent.putExtra(Intent.EXTRA_SUBJECT, this.mTitleValue);
+//		intent.putExtra(Intent.EXTRA_TEXT, this.mItemUri.toString());
+//		
+//		this.mShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
+//		this.mShareActionProvider.setShareIntent(intent);
 		return super.onCreateOptionsMenu(menu);
 	}
 

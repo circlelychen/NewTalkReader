@@ -3,5 +3,6 @@
         android:title="@string/menu_share"
         android:icon="@drawable/ic_action_share"
         android:showAsAction="ifRoom"
-        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider" />
+        />
 </menu>
+<!--  android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider" -->

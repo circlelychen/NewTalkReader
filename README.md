@@ -1,4 +1,4 @@
-NewTalk Reader for Android
+NewTalk RSS Reader for Android
 ==============
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.howard.projects.newtalkreader)

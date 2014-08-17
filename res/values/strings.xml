@@ -4,7 +4,7 @@
     <string name="menu_author">特別感謝</string>
     <string name="menu_version">版本資訊</string>
     <string name="menu_share">分享</string>
-    <string name="title_activity_new_talk_channel">新頭殼</string>
+    <string name="title_activity_new_talk_channel">新頭殼閱讀器</string>
 	<string name="title_activity_new_talk_channel_selection">訂閱頻道</string>
 	
     <string name="newtalk_message_loading">載入中 ...</string>

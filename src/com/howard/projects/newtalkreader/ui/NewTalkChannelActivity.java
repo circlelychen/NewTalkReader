@@ -1,13 +1,15 @@
 package com.howard.projects.newtalkreader.ui;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -92,6 +94,11 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 			frag.loadSource(mSelectedCategory);
 			frag.loadChannel(mSelectedChannel);
 		}
+    	
+    	// get intent to check data or not
+    	if( this.checkLaunchWithUri(this.getIntent().getData())){
+    		this.getIntent().setData(null);
+    	}
     }
     
 	@Override
@@ -222,6 +229,37 @@ public class NewTalkChannelActivity extends SherlockFragmentActivity implements 
 //			onChannelSelected(mSelectedChannel);
 		}
 		
+	}
+	
+	private boolean checkLaunchWithUri(Uri dataUrl) {
+		// get intent to check data or not
+		if( dataUrl == null)
+			return true;
+		if (!dataUrl.getHost().equals(
+				this.getResources().getString(R.string.newtalk_host)))
+			return true;
+		if(!dataUrl.getScheme().equals(
+						this.getResources().getString(R.string.newtalk_scheme)))
+			return true;
+		
+		List<String> segments = dataUrl.getPathSegments();
+		if( segments.isEmpty())
+			return true;
+		
+		if( !segments.get(0).equals("news"))
+			return true;
+		
+		Intent intentToSend = new Intent(this, ItemDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("_title", "");
+		bundle.putParcelable("_link", dataUrl);
+		intentToSend.putExtras(bundle);
+		this.startActivity(intentToSend);
+		
+		// clean intent after consumin it
+		this.getIntent().setData(null);
+		
+		return true;
 	}
 }
 

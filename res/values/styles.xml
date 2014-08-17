@@ -1,7 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" />
-    <!--  style name="AppDialogTheme" parent="Theme.Sherlock.Light.Dialog" />-->
+    <!-- <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" />  -->
+    <!-- <style name="AppDialogTheme" parent="Theme.Sherlock.Light.Dialog" /> -->
     
     <style name="ChannelItemRow" >
         <item name="android:layout_width">fill_parent</item>

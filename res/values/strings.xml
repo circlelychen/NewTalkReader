@@ -3,7 +3,7 @@
     <string name="app_name">NewTalkReader</string>
     <string name="menu_author">特別感謝</string>
     <string name="menu_version">版本資訊</string>
-    <string name="menu_share">版本資訊</string>
+    <string name="menu_share">分享</string>
     <string name="title_activity_new_talk_channel">新頭殼</string>
 	<string name="title_activity_new_talk_channel_selection">訂閱頻道</string>
 	
@@ -13,6 +13,9 @@
     <string name="newtalk_error_unknown">發生錯誤</string>
     <string name="settings_feedback">問題回報</string>
     <string name="settings_feedback_summary">請提供您寶貴的意見或將錯誤回報給我們知道。</string>
+    
+    <string name="newtalk_promote_appname">【新頭殼 RSS 閱讀器 】</string>
+	<string name="newtalk_promote_description">提供閱讀新頭殼 "RSS 訂閱頻道" 的全新體驗，讓用戶依據個人喜好自行訂閱要聞與議題，打造一個真正客製化的新聞閱讀經驗。</string>
     
     <string name="newtalk_entry_url">http://newtalk.tw/</string>
     <string name="newtalk_rss_url">http://newtalk.tw/rss.php</string>

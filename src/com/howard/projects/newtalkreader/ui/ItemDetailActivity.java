@@ -74,6 +74,7 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
 		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_SUBJECT, this.mTitleValue);
 		intent.putExtra(Intent.EXTRA_TITLE, this.mTitleValue);
 		
 		// initiate content for EXTRA_TEXT 
@@ -81,11 +82,11 @@ public class ItemDetailActivity extends SherlockFragmentActivity implements
 		buf.append(this.mTitleValue)
 				.append(System.getProperty("line.separator"))
 				.append(this.mItemUri.toString())
-				.append(System.getProperty("line.separator"));
-//				.append(System.getProperty("line.separator"))
-//				.append("shared by ")
-//				.append(this.getResources().getString(
-//						R.string.newtalk_promote_appname));
+				.append(System.getProperty("line.separator"))
+				.append(System.getProperty("line.separator"))
+				.append("shared by ")
+				.append(this.getResources().getString(
+						R.string.newtalk_promote_appname));
 		intent.putExtra(Intent.EXTRA_TEXT, buf.toString());
 		
 		this.mShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();

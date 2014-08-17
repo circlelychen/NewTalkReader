@@ -1,6 +1,9 @@
 NewTalk Reader for Android
 ==============
 
+[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.howard.projects.newtalkreader)
+    
+
 Intrdocution
 --------------
 A personalized news reader for Newtalk.tw, which specially allows users to follow the topics relevant to their preferences. This application is aimed to private usage for myself. It supports android version from 2.3.x to 4.4.x. The completion of this application is based on follwoing open-source projects.  
